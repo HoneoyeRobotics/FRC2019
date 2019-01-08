@@ -127,6 +127,7 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
     SmartDashboard.putBoolean("Digital Sensor1", testing.getDigitalSensor1());
     SmartDashboard.putNumber("Analog Sensor 1", testing.getAnalogSensor1());
+    SmartDashboard.putNumber("Analog Sensor 1 Avg", testing.getAnalogSensor1Avg());
   }
 
   /**

@@ -25,9 +25,12 @@ public class Testing extends Subsystem {
     return digitalSensor1.get();
   }
 
-  
   public double getAnalogSensor1() {
     return analogSensor1.getVoltage();
+  }
+  
+  public double getAnalogSensor1Avg() {
+    return analogSensor1.getAverageVoltage();
   }
   @Override
   public void initDefaultCommand() {
