@@ -22,4 +22,6 @@ public class RobotMap {
   public static final int rearLeftDriveMotorCanID = 2;
   public static final int frontRightDriveMotorCanID = 3;
   public static final int rearRightDriveMotorCanID = 4;
+
+  public static final int oldArmCanID = 7;
 }
