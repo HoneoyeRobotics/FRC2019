@@ -7,39 +7,31 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Add your docs here.
  */
-public class Testing extends Subsystem {
+public class PneumaticSystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  public DigitalInput towerLimitSwitch = new DigitalInput(3);
-  
-  //public DigitalInput armLimitSwitch = new DigitalInput(2);
-  public AnalogInput armProxySensor = new  AnalogInput(1);
+  private Compressor compressor = new Compressor(10);
+
+  private DoubleSolenoid  exampleSolenoid = new DoubleSolenoid (10, 1,0);
 
 
-  public boolean getTowerSwitch(){
-    return towerLimitSwitch.get();
+  public PneumaticSystem(){
+    SmartDashboard.putData("Solenoid", exampleSolenoid);
+    compressor.setClosedLoopControl(true);
   }
-  // public boolean getArmSwitch(){
-  //   return armLimitSwitch.get();
-  // }
-
-  public boolean cubeInArms(){
-    return getArmProxySensor() < 1;
+  public void setSolenoid(DoubleSolenoid.Value value){
+    
+    exampleSolenoid.set(value);
   }
-
-  public double getArmProxySensor() {
-    return armProxySensor.getVoltage();
-  }
-  
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
