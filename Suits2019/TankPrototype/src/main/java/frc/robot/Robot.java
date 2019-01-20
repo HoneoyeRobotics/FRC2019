@@ -12,24 +12,17 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.Arms;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.OldArms;
-import frc.robot.subsystems.Testing;
+import frc.robot.commands.PulseInOut;
+import frc.robot.commands.PushForward;
+import frc.robot.commands.PushReverse;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.PneumaticSystem;
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the TimedRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.gradle file in the
- * project.
- */
 public class Robot extends TimedRobot {
   public static OI m_oi;
-  public static Drivetrain drivetrain = new Drivetrain();
-  public static OldArms oldArms = new OldArms();
-  public static Testing testing = new Testing();
-  public static Arms  arms = new Arms();
+  public static DriveTrain drivetrain = new DriveTrain();
+
+  public static PneumaticSystem pneumaticSystem = new PneumaticSystem();
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -42,10 +35,9 @@ public class Robot extends TimedRobot {
     m_oi = new OI();
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
-    SmartDashboard.putData(Scheduler.getInstance());
-    SmartDashboard.putData(oldArms);
-    SmartDashboard.putData(drivetrain);
-    SmartDashboard.putData(testing);
+    SmartDashboard.putData("Push FWD", new PushForward());
+    SmartDashboard.putData("Push REV", new PushReverse());
+    SmartDashboard.putData("Cycle Pneumatics", new PulseInOut());
   }
 
   /**
@@ -127,11 +119,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    SmartDashboard.putBoolean("Tower Switch", testing.getTowerSwitch());
-    
-    SmartDashboard.putNumber("Arm Proxy", testing.getArmProxySensor());
-    SmartDashboard.putBoolean("Cube in Arms", testing.cubeInArms());
-    SmartDashboard.putNumber("Gyro Angle", drivetrain.getGyroAngle());
   }
 
   /**
