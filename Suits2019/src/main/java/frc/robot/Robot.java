@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Arms;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.OldArms;
 import frc.robot.subsystems.Testing;
 
@@ -26,7 +26,7 @@ import frc.robot.subsystems.Testing;
  */
 public class Robot extends TimedRobot {
   public static OI m_oi;
-  public static Drivetrain drivetrain = new Drivetrain();
+  public static DriveTrain drivetrain = new DriveTrain();
   public static OldArms oldArms = new OldArms();
   public static Testing testing = new Testing();
   public static Arms  arms = new Arms();
@@ -131,7 +131,6 @@ public class Robot extends TimedRobot {
     
     SmartDashboard.putNumber("Arm Proxy", testing.getArmProxySensor());
     SmartDashboard.putBoolean("Cube in Arms", testing.cubeInArms());
-    SmartDashboard.putNumber("Gyro Angle", drivetrain.getGyroAngle());
   }
 
   /**

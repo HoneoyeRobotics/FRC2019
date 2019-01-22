@@ -10,52 +10,40 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.ArcadeDriveWithJoystick;
 
-/**
- * Add your docs here.
- */
-public class Drivetrain extends Subsystem {
+public class DriveTrain extends Subsystem {
   private WPI_TalonSRX frontLeftDriveMotor;
-	private WPI_VictorSPX rearLeftDriveMotor;
+	private WPI_TalonSRX rearLeftDriveMotor;
 	private SpeedControllerGroup leftDriveMotorGroup;
 	
 	private WPI_TalonSRX frontRightDriveMotor;
-	private WPI_VictorSPX rearRightDriveMotor;	
+	private WPI_TalonSRX rearRightDriveMotor;	
   private SpeedControllerGroup rightDriveMotorGroup;
   
   private DifferentialDrive drivetrain;
 
-  private ADXRS450_Gyro gyro; 
-
-  public Drivetrain(){
+  public DriveTrain(){
     frontLeftDriveMotor = new WPI_TalonSRX(RobotMap.frontLeftDriveMotorCanID);
-    rearLeftDriveMotor = new WPI_VictorSPX(RobotMap.rearLeftDriveMotorCanID);
-    leftDriveMotorGroup = new SpeedControllerGroup(frontLeftDriveMotor, rearLeftDriveMotor);
+    rearLeftDriveMotor = new WPI_TalonSRX(RobotMap.rearLeftDriveMotorCanID);
+	  leftDriveMotorGroup = new SpeedControllerGroup(frontLeftDriveMotor, rearLeftDriveMotor);
     
     frontRightDriveMotor = new WPI_TalonSRX(RobotMap.frontRightDriveMotorCanID);
-    rearRightDriveMotor = new WPI_VictorSPX(RobotMap.rearRightDriveMotorCanID);
+    rearRightDriveMotor = new WPI_TalonSRX(RobotMap.rearRightDriveMotorCanID);
     rightDriveMotorGroup = new SpeedControllerGroup(frontRightDriveMotor, rearRightDriveMotor);
     
+
+    frontRightDriveMotor.setInverted(true);
+    rearRightDriveMotor.setInverted(true);
+
     drivetrain = new DifferentialDrive(leftDriveMotorGroup, rightDriveMotorGroup);
 
-
-    //gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
-    
-    gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
-    gyro.reset();
-    SmartDashboard.putData("Gyro", gyro);
-    SmartDashboard.putData("LF Drive (" + RobotMap.frontLeftDriveMotorCanID + ")",  frontLeftDriveMotor);
+    SmartDashboard.putData("LF Drive (" + RobotMap.frontLeftDriveMotorCanID + ")", rearLeftDriveMotor);
     SmartDashboard.putData("LR Drive (" + RobotMap.rearLeftDriveMotorCanID + ")",  rearLeftDriveMotor);
     SmartDashboard.putData("RF Drive (" + RobotMap.frontRightDriveMotorCanID + ")",  frontRightDriveMotor);
     SmartDashboard.putData("RR Drive (" + RobotMap.rearRightDriveMotorCanID + ")",  rearRightDriveMotor);
@@ -72,7 +60,4 @@ public class Drivetrain extends Subsystem {
     setDefaultCommand(new ArcadeDriveWithJoystick());
   }
 
-  public double getGyroAngle(){
-    return gyro.getAngle();
-  }
 }
