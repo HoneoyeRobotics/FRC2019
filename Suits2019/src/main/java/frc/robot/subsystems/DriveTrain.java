@@ -16,17 +16,20 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.ArcadeDriveWithJoystick;
+import frc.robot.lib.*;
+import edu.wpi.first.wpilibj.I2C;
 
 public class DriveTrain extends Subsystem {
   private WPI_TalonSRX frontLeftDriveMotor;
 	private WPI_TalonSRX rearLeftDriveMotor;
-	private SpeedControllerGroup leftDriveMotorGroup;
-	
+	private SpeedControllerGroup leftDriveMotorGroup;	
 	private WPI_TalonSRX frontRightDriveMotor;
 	private WPI_TalonSRX rearRightDriveMotor;	
   private SpeedControllerGroup rightDriveMotorGroup;
-  
   private DifferentialDrive drivetrain;
+  
+  public LIDARLite distanceSensor;
+  
 
   public DriveTrain(){
     frontLeftDriveMotor = new WPI_TalonSRX(RobotMap.frontLeftDriveMotorCanID);
@@ -36,7 +39,9 @@ public class DriveTrain extends Subsystem {
     frontRightDriveMotor = new WPI_TalonSRX(RobotMap.frontRightDriveMotorCanID);
     rearRightDriveMotor = new WPI_TalonSRX(RobotMap.rearRightDriveMotorCanID);
     rightDriveMotorGroup = new SpeedControllerGroup(frontRightDriveMotor, rearRightDriveMotor);
+    distanceSensor = new LIDARLite (I2C.Port.kOnboard);
     
+    distanceSensor.startMeasuring();
 
     frontRightDriveMotor.setInverted(true);
     rearRightDriveMotor.setInverted(true);
@@ -52,8 +57,17 @@ public class DriveTrain extends Subsystem {
   
 	public void arcadeDrive(double xSpeed,double zRotation) {				
 		drivetrain.arcadeDrive( xSpeed, zRotation);
-	}	
+  }	
+  
+  public int getDistanceCM(){
+    return distanceSensor.getDistance();
+  }
 	
+  public double getDistance(){    
+    int distance = distanceSensor.getDistance();
+    double inches = distance / 2.54;
+    return inches;
+  }
 
   @Override
   public void initDefaultCommand() {

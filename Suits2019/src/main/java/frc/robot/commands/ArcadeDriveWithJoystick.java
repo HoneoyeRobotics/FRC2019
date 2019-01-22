@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
 
@@ -30,6 +31,13 @@ public class ArcadeDriveWithJoystick extends Command {
 		double rightTrigger = OI.driverJoystick.getRawAxis(OI.driverJoystickTurnRightAxis);				
     double zRotation = leftTrigger - rightTrigger;
     Robot.driveTrain.arcadeDrive(xSpeed, zRotation);
+
+
+    //publish lidar to dashboard
+    double distance = Robot.driveTrain.getDistance();
+    SmartDashboard.putNumber("Distance (in)", distance);
+    int distanceCM = Robot.driveTrain.getDistanceCM();
+    SmartDashboard.putNumber("Distance (cm)", distanceCM);
   }
 
   // Make this return true when this Command no longer needs to run execute
