@@ -15,7 +15,7 @@ public class ClawOut extends Command {
   public ClawOut(double timeout){
     
     requires(Robot.claw);
-    setTimeout(0.1);
+    setTimeout(timeout);
   }
   public ClawOut() {
     this(0.1);

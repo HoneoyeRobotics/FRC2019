@@ -12,10 +12,10 @@ import frc.robot.Robot;
 
 public class ClawIn extends Command {
   public ClawIn(double timeout){
-    
     requires(Robot.claw);
-    setTimeout(0.1);
+    setTimeout(timeout);
   }
+
   public ClawIn() {
     this(0.1);
   }
@@ -48,6 +48,6 @@ public class ClawIn extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.claw.stopClawMoveInOut();
+    end();
   }
 }

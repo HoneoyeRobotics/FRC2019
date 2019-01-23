@@ -37,17 +37,16 @@ public class DriveTrain extends Subsystem {
 	  leftDriveMotorGroup = new SpeedControllerGroup(frontLeftDriveMotor, rearLeftDriveMotor);
     
     frontRightDriveMotor = new WPI_TalonSRX(RobotMap.frontRightDriveMotorCanID);
+    frontRightDriveMotor.setInverted(true);
     rearRightDriveMotor = new WPI_TalonSRX(RobotMap.rearRightDriveMotorCanID);
+    rearRightDriveMotor.setInverted(true);
     rightDriveMotorGroup = new SpeedControllerGroup(frontRightDriveMotor, rearRightDriveMotor);
-    distanceSensor = new LIDARLite (I2C.Port.kOnboard);
+    drivetrain = new DifferentialDrive(leftDriveMotorGroup, rightDriveMotorGroup);
     
+    distanceSensor = new LIDARLite (I2C.Port.kOnboard);
     distanceSensor.startMeasuring();
 
-    frontRightDriveMotor.setInverted(true);
-    rearRightDriveMotor.setInverted(true);
-
-    drivetrain = new DifferentialDrive(leftDriveMotorGroup, rightDriveMotorGroup);
-
+    //put raw data of motor controllers to dashboard
     SmartDashboard.putData("LF Drive (" + RobotMap.frontLeftDriveMotorCanID + ")", rearLeftDriveMotor);
     SmartDashboard.putData("LR Drive (" + RobotMap.rearLeftDriveMotorCanID + ")",  rearLeftDriveMotor);
     SmartDashboard.putData("RF Drive (" + RobotMap.frontRightDriveMotorCanID + ")",  frontRightDriveMotor);

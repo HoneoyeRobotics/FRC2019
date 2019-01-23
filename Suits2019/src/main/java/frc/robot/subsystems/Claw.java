@@ -20,7 +20,7 @@ import  frc.robot.lib.*;
 public class Claw extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  private Compressor compressor = new Compressor(10);
+  private Compressor compressor = new Compressor(RobotMap.pneumaticControlModuleID);
   public ClawInOutState clawInOutState;
 
   private DoubleSolenoid  clawInOutSolenoid = new DoubleSolenoid (RobotMap.pneumaticControlModuleID, RobotMap.clawOutPCMID, RobotMap.clawInPCMID);
