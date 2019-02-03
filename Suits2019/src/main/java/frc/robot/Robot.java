@@ -30,11 +30,8 @@ public class Robot extends TimedRobot {
   public static Claw claw;
   public static DriveTrain driveTrain;
   public static OI oi;
-<<<<<<< HEAD
   Thread m_visionThread;
-=======
   public static Tower tower;
->>>>>>> aae8f7ee6e7d10eb6b95308bfdfcef546927dbce
 
   /**
    * This function is run when the robot is first started up and should be
