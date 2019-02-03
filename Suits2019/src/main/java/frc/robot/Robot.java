@@ -30,7 +30,11 @@ public class Robot extends TimedRobot {
   public static Claw claw;
   public static DriveTrain driveTrain;
   public static OI oi;
+<<<<<<< HEAD
   Thread m_visionThread;
+=======
+  public static Tower tower;
+>>>>>>> aae8f7ee6e7d10eb6b95308bfdfcef546927dbce
 
   /**
    * This function is run when the robot is first started up and should be
@@ -38,10 +42,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    oi = new OI();
     driveTrain  = new DriveTrain();
     claw = new Claw();
+    tower = new Tower();
+    oi = new OI();
     //add commands to dashboard    
+    SmartDashboard.putData(Robot.tower);
     SmartDashboard.putData("Open Claw", new OpenClaw());    
     SmartDashboard.putData("Close Claw", new CloseClaw());
   }
@@ -101,6 +107,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
+    tower.disable();
   }
 
   @Override
@@ -119,6 +126,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    tower.setSetpoint(0);
+    tower.enable();
   }
 
   /**
