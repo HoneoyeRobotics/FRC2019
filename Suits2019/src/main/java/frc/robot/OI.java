@@ -32,8 +32,7 @@ public class OI {
   public static JoystickButton driverButtonY = new JoystickButton(driverJoystick, 4);
 
   public OI() {    
-    driverButtonY.whenPressed(new ClawOut());
-    driverButtonX.whenPressed(new ClawIn());
-    driverButtonB.whenPressed(new ClawInOut());
+    driverButtonY.whenPressed(new OpenClaw());
+    driverButtonX.whenPressed(new CloseClaw());
   }
 }

@@ -5,18 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.lib;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
-
-public class ClawInOut extends CommandGroup {
-  /**
-   * Add your docs here.
-   */
-  public ClawInOut() {
-    addSequential(new ClawOut(0.1));
-    addSequential(new Wait(1));
-    addSequential(new ClawIn(0.1));
-    
-  }
+/**
+ * Add your docs here.
+ */
+public enum GamePiece {
+    Hatch,
+    Ball,
+    None
 }

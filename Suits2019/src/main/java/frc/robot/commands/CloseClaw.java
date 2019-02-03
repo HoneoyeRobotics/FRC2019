@@ -10,14 +10,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class ClawOut extends Command {
+public class CloseClaw extends Command {
 
-  public ClawOut(double timeout){
+  public CloseClaw(double timeout){
     
     requires(Robot.claw);
     setTimeout(timeout);
   }
-  public ClawOut() {
+  public CloseClaw() {
     this(0.1);
   }
 
@@ -25,7 +25,7 @@ public class ClawOut extends Command {
   @Override
   protected void initialize() {
     
-    Robot.claw.moveClawOut();
+    Robot.claw.closeClaw();
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -42,13 +42,13 @@ public class ClawOut extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.claw.stopClawMoveInOut();
+    Robot.claw.stopClaw();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.claw.stopClawMoveInOut();
-  }
+    end();
+    }
 }

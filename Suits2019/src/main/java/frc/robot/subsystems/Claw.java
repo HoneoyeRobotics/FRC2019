@@ -25,36 +25,59 @@ public class Claw extends Subsystem {
 
   private DoubleSolenoid  clawInOutSolenoid = new DoubleSolenoid (RobotMap.pneumaticControlModuleID, RobotMap.clawOutPCMID, RobotMap.clawInPCMID);
 
+  public GamePiece currentGamePiece = GamePiece.None;
 
   public Claw(){
     SmartDashboard.putData("Claw In/Out Solenoid", clawInOutSolenoid);
     compressor.setClosedLoopControl(true);
   }
 
-  public void moveClawIn(){
+  public void openClaw(){
     if(clawInOutState == ClawInOutState.IN) {
       return;
     }
     clawInOutState = ClawInOutState.IN;
     clawInOutSolenoid.set(DoubleSolenoid.Value.kReverse);
+    currentGamePiece = GamePiece.Hatch;
+    displayGamePiece();
   }
 
-  public void stopClawMoveInOut(){
+  public void stopClaw(){
     clawInOutSolenoid.set(DoubleSolenoid.Value.kOff);
   }
 
-  public void moveClawOut(){
+  public void closeClaw(){
     if(clawInOutState == ClawInOutState.OUT){
       return;
     }
     clawInOutState = ClawInOutState.OUT;
     clawInOutSolenoid.set(DoubleSolenoid.Value.kForward);
+    currentGamePiece = GamePiece.Ball;
+    displayGamePiece();
+
   }
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+  }
+
+
+  public void displayGamePiece() {
+    String name = "";
+    switch(currentGamePiece) {
+      case Hatch:
+        name = "hatch";
+        break;
+      case Ball:
+        name = "ball";
+        break;
+      default:
+        name = "none";
+        break;
+    }
+    SmartDashboard.putString("gamepiece", name);
   }
 }
 

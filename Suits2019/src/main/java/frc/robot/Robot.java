@@ -35,10 +35,9 @@ public class Robot extends TimedRobot {
     oi = new OI();
     driveTrain  = new DriveTrain();
     claw = new Claw();
-    //add commands to dashboard
-    SmartDashboard.putData("Move Claw In / Out", new ClawInOut());    
-    SmartDashboard.putData("Move Claw In", new ClawIn());    
-    SmartDashboard.putData("Move Claw Out", new ClawOut());
+    //add commands to dashboard    
+    SmartDashboard.putData("Open Claw", new OpenClaw());    
+    SmartDashboard.putData("Close Claw", new CloseClaw());
   }
 
   /**
