@@ -12,6 +12,7 @@ import frc.robot.Robot;
 
 public class OpenClaw extends Command {
   public OpenClaw(double timeout){
+    super("OpenClaw");
     requires(Robot.claw);
     setTimeout(timeout);
   }
