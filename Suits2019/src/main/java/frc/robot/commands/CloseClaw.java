@@ -13,7 +13,7 @@ import frc.robot.Robot;
 public class CloseClaw extends Command {
 
   public CloseClaw(double timeout){
-    
+    super("CloseClaw");
     requires(Robot.claw);
     setTimeout(timeout);
   }

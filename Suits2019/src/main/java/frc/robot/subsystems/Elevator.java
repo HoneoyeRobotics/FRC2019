@@ -10,38 +10,33 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.AdjustTower;
+import frc.robot.RobotMap;
+import frc.robot.commands.*;
 
 /**
  * Add your docs here.
  */
-public class Tower extends PIDSubsystem {
-  /**
-   * Add your docs here.
-   */
-  private static final int kMotorChannel = 7;
-  private static final int kEncoderPortA = 1;
-  private static final int kEncoderPortB = 2;
+public class Elevator extends PIDSubsystem {
+  public boolean IsEnabled =  false;
 
-  private Encoder m_encoder;
-  private WPI_VictorSPX m_elevatorMotor;
+  private Encoder elevatorEncoder;
+  private WPI_VictorSPX elevatorMotor;
 
-  public Tower() {
+  public Elevator() {
     // Intert a subsystem name and PID values here
   
-    super("Tower", 0.025, 0.0, 0.01);
-    m_elevatorMotor = new WPI_VictorSPX(kMotorChannel);
-    m_encoder = new Encoder(kEncoderPortA, kEncoderPortB);
+    super("Elevator", 0.025, 0.0, 0.01);
+    elevatorMotor = new WPI_VictorSPX(RobotMap.elevatorMotorCanID);
+    elevatorEncoder = new Encoder(RobotMap.elevatorEncoderADIO, RobotMap.elevatorEncoderBDIO);
 
     setInputRange(-10000.0, 10000.0);
     setAbsoluteTolerance(1.0);
     setOutputRange(-1.0, 1.0);
 
     // 498 pulses per rotation.  Set distance accordingly so we read encoder pulses.
-    m_encoder.setDistancePerPulse(498/360);
+    elevatorEncoder.setDistancePerPulse(498/360);
 
     // Use these to get going:
     // setSetpoint() - Sets where the PID controller should move the system
@@ -52,7 +47,7 @@ public class Tower extends PIDSubsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new AdjustTower());
+    setDefaultCommand(new AdjustElevator());
   }
 
   @Override
@@ -60,18 +55,33 @@ public class Tower extends PIDSubsystem {
     // Return your input value for the PID loop
     // e.g. a sensor, like a potentiometer:
     // yourPot.getAverageVoltage() / kYourMaxVoltage;
-    double encValue = m_encoder.get();
-    double encDistance = m_encoder.getDistance();
+    double encValue = elevatorEncoder.get();
+    double encDistance = elevatorEncoder.getDistance();
     SmartDashboard.putNumber("Tower Encoder Value", encValue);
     SmartDashboard.putNumber("Tower Encoder Dist.", encDistance);
     return encValue;
+  }
+
+public void setDisabled(){
+  disable();
+  IsEnabled = false;
+}
+
+public void setEnabled(){
+  enable();
+  IsEnabled = true;
+}
+
+  public void initialize(){
+    setSetpoint(0);
+    enable();
   }
 
   @Override
   protected void usePIDOutput(double output) {
     // Use output to drive your system, like a motor
     // e.g. yourMotor.set(output);
-    m_elevatorMotor.set(output);
+    elevatorMotor.set(output);
     SmartDashboard.putNumber("tower pid output", output);
   }
 }

@@ -8,38 +8,24 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
 
-public class AdjustTower extends Command {
+public class RunArmWheels extends Command {
+  public RunArmWheels() {
+    super("RunArmWheels");
+    setInterruptible(true);
 
-  double LastPOV = -1;
-
-  public AdjustTower() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.tower);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    LastPOV = -1;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double POV = Robot.oi.driverJoystick.getPOV();
-    SmartDashboard.putNumber("POV",POV);
-    if(POV == LastPOV)
-      return;
-    LastPOV = POV;
-    if(POV == 0){
-      Robot.tower.setSetpoint(Robot.tower.getSetpoint() + 125);      
-    } else if (POV == 180){
-      Robot.tower.setSetpoint(Robot.tower.getSetpoint() - 125);
-    }
   }
 
   // Make this return true when this Command no longer needs to run execute()

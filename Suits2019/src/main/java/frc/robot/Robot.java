@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
@@ -14,6 +16,7 @@ import edu.wpi.cscore.*;
 import edu.wpi.first.cameraserver.*;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
@@ -31,7 +34,9 @@ public class Robot extends TimedRobot {
   public static DriveTrain driveTrain;
   public static OI oi;
   Thread m_visionThread;
-  public static Tower tower;
+  public static Elevator elevator;
+  public NetworkTable table;
+  public Arms arms;// = new Arms();
 
   /**
    * This function is run when the robot is first started up and should be
@@ -39,14 +44,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    driveTrain  = new DriveTrain();
+   // driveTrain  = new DriveTrain();
     claw = new Claw();
-    tower = new Tower();
+    elevator = new Elevator();
+    arms = new Arms();
     oi = new OI();
     //add commands to dashboard    
-    SmartDashboard.putData(Robot.tower);
+    SmartDashboard.putData(Robot.elevator);
     SmartDashboard.putData("Open Claw", new OpenClaw());    
     SmartDashboard.putData("Close Claw", new CloseClaw());
+    table = NetworkTable.getTable("VisionTable");
+    cameraInit();
   }
 
   public void cameraInit() {
@@ -99,12 +107,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    
   }
 
 
   @Override
   public void disabledInit() {
-    tower.disable();
+    elevator.disable();
   }
 
   @Override
@@ -123,8 +132,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    tower.setSetpoint(0);
-    tower.enable();
+    Robot.elevator.initialize();
   }
 
   /**
@@ -133,6 +141,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+    SmartDashboard.putBoolean("In Range?", table.getBoolean("inRange", false));
+    SmartDashboard.putNumber("Distance from Center", table.getNumber("distance", 9999));
   }
 
   /**

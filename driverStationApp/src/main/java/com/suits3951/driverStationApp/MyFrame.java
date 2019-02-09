@@ -63,23 +63,19 @@ public class MyFrame extends JFrame {
 
         
         ntInstance = NetworkTableInstance.getDefault();
-        nTable = ntInstance.getTable("GripTable");
+        nTable = ntInstance.getTable("VisionTable");
         ntInstance.startClientTeam(3951);  // where TEAM=190, 294, etc, or use inst.startClient("hostname") or similar
         ntInstance.startDSClient();  // recommended if running on DS computer; this gets the robot IP from the DS
         nteInRange = nTable.getEntry("inRange");
         nteDistance = nTable.getEntry("distance");
-        nteNumLines = nTable.getEntry("numLines");
        new MyThread().start();
     }
     private NetworkTableInstance ntInstance;
     private NetworkTable nTable;
     private NetworkTableEntry nteInRange;
     private NetworkTableEntry nteDistance;
-    private NetworkTableEntry nteNumLines;
 
     private VideoCap videoCap = new VideoCap();
-
-    private int numlines = 0;
 
     GripPipeline pipeline = new GripPipeline();
 
@@ -94,10 +90,10 @@ public class MyFrame extends JFrame {
     public void paint(Graphics g){
         g = contentPanel.getGraphics();
         BufferedImage image = videoCap.getOneFrame();
-        Mat mat = videoCap.lastMat;
+        Mat mat = videoCap.lastMat; //videoCap.getLastMat();
 
         pipeline.process(mat);
-        ArrayList<GripPipeline.Line> lines = pipeline.findLinesOutput();
+        //ArrayList<GripPipeline.Line> lines = pipeline.findLinesOutput();
 
         int point = 1;
 
@@ -165,8 +161,12 @@ public class MyFrame extends JFrame {
         if(lastCenter != center){
             lastCenter = center;
 
-            System.out.print("Points are now " + topPoint1.x + "," + topPoint1.y + " and " + topPoint2.x + "," + topPoint2.y + "; Center: " + center + "; length: " + length + "; DFC: " + distanceFromCenter +  "; close? " + closeEnough + "\n");
+            System.out.print("Points are now " + topPoint1.x + "," + topPoint1.y + " and " + topPoint2.x + "," + topPoint2.y + 
+            "; Center: " + center + "; length: " + length + "; DFC: " + distanceFromCenter +  
+            "; close? " + closeEnough + "\n");
 
+            nteDistance.setDouble(distanceFromCenter);
+            nteInRange.setBoolean(closeEnough);
         
             
         }
@@ -191,7 +191,7 @@ public class MyFrame extends JFrame {
             for (;;){
                 repaint();
                 try {                     
-                    Thread.sleep(50);                                
+                    Thread.sleep(100);                                
                     System.gc(); 
 
                 } catch (InterruptedException e) {    }

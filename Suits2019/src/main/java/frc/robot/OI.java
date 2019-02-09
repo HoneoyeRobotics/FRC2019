@@ -25,17 +25,35 @@ public class OI {
   public static final int elbowAxis = 5; //right stick, y axis
   
   public static Joystick driverJoystick = new Joystick(0); 
+  public static Joystick secondaryJoystick = new Joystick(1);
 
   public static JoystickButton driverButtonA = new JoystickButton(driverJoystick, 1);
   public static JoystickButton driverButtonB  = new JoystickButton(driverJoystick, 2);
   public static JoystickButton driverButtonX = new JoystickButton(driverJoystick, 3);
   public static JoystickButton driverButtonY = new JoystickButton(driverJoystick, 4);
 
+
+
+  public static JoystickButton secondaryButtonA = new JoystickButton(secondaryJoystick, 1);
+  public static JoystickButton secondaryButtonB  = new JoystickButton(secondaryJoystick, 2);
+  public static JoystickButton secondaryButtonX = new JoystickButton(secondaryJoystick, 3);
+  public static JoystickButton secondaryButtonY = new JoystickButton(secondaryJoystick, 4);
+  public static JoystickButton secondaryButtonLB = new JoystickButton(secondaryJoystick, 5);
+  public static JoystickButton secondaryButtonRB  = new JoystickButton(secondaryJoystick, 6);
+  public static JoystickButton secondaryButtonBack = new JoystickButton(secondaryJoystick, 7);
+  public static JoystickButton secondaryButtonStart = new JoystickButton(secondaryJoystick, 8);
+
+
+  public static final int secondaryLStickXAxis = 0;
+  public static final int secondaryLStickYAxis = 1;
+  public static final int secondaryLTAxis = 2;
+  public static final int secondaryRTAxis = 3;
+  public static final int secondaryRStickXAxis = 4;
+  public static final int secondaryRStickYAxis = 5;
+
+
   public OI() {    
-    driverButtonX.whenPressed(new EnableTower());
-    driverButtonY.whenPressed(new LiftTower());
-    driverButtonA.whenPressed(new ResetTower());
-    driverButtonB.whenPressed(new DisableTower());
+
 
   }
 }

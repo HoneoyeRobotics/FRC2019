@@ -19,8 +19,23 @@ public class RobotMap {
     public static final int rearLeftDriveMotorCanID = 2;
     public static final int frontRightDriveMotorCanID = 3;
     public static final int rearRightDriveMotorCanID = 4;
+    public static final int armFwdRevMotorCanID = 5;
+    public static final int elevatorMotorCanID = 6;
+    public static final int leftArmWheelMotorCanID = 7;
+    public static final int rightArmWheelMotorCanID = 8;
+    
     public static final int pneumaticControlModuleID = 10;
     public static final int clawInPCMID = 0;
     public static final int clawOutPCMID = 1;
+
+    public static final int elevatorEncoderADIO = 0;
+    public static final int elevatorEncoderBDIO = 1;
+    public static final int armFwdRevEncoderADIO = 2;
+    public static final int armFwdRevEncoderBDIO = 3;
+
+
+    public static final double slowSpeedModifier = 0.5;
+
+
     
 }

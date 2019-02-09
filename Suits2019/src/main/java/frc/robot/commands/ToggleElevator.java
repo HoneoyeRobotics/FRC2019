@@ -7,22 +7,32 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
 
-public class ResetTower extends InstantCommand {
-  public ResetTower() {
-    super();
+/**
+ * Add your docs here.
+ */
+public class ToggleElevator extends InstantCommand {
+  /**
+   * Add your docs here.
+   */
+  public ToggleElevator() {
+    super("ToggleElevator");
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.tower);
+    requires(Robot.elevator);
   }
 
-  // Called just before this Command runs the first time
+  // Called once when the command executes
   @Override
   protected void initialize() {
-    Robot.tower.setSetpoint(0);
-    Robot.tower.enable();
+    if(Robot.elevator.IsEnabled) {
+      Robot.elevator.setDisabled();
+    }
+    else {
+      Robot.elevator.setEnabled();
+    }
   }
+
 }

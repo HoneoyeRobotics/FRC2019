@@ -17,14 +17,26 @@ public class VideoCap {
     public Mat lastMat;
 
     VideoCap(){
-        cap = new VideoCapture("http://10.39.51.11/mjpg/video.mjpg");
-       cap.open("http://10.39.51.11/mjpg/video.mjpg");
+         cap = new VideoCapture("http://10.39.51.11/mjpg/video.mjpg");
+         boolean opened = cap.open("http://10.39.51.11/mjpg/video.mjpg");
+
+         return;
+        //cap = new VideoCapture(0);
+        //cap.open(0);
     }
+
+Mat getLastMat(){
+        
+    cap.read(mat2Img.mat);
+    lastMat = mat2Img.mat;
+    return lastMat;
+}
 
     BufferedImage getOneFrame() {        
         cap.read(mat2Img.mat);
         lastMat = mat2Img.mat;
-        return mat2Img.getImage(mat2Img.mat);
+        BufferedImage image = mat2Img.getImage(mat2Img.mat);
+        return image;
     }
 
 

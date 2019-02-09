@@ -9,45 +9,40 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.OI;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
 
-public class ArcadeDriveWithJoystick extends Command {
-  public ArcadeDriveWithJoystick() {
-    super("ArcadeDriveWithJoystick");
-    requires(Robot.driveTrain);
-    setInterruptible(true);
+public class AdjustElevator extends Command {
+
+  double LastPOV = -1;
+
+  public AdjustElevator() {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
+    requires(Robot.elevator);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    LastPOV = -1;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double xSpeed = OI.driverJoystick.getRawAxis(OI.driverJoystickForwardAxis);
-    double leftTrigger= OI.driverJoystick.getRawAxis(OI.driverJoystickTurnLeftAxis);
-		double rightTrigger = OI.driverJoystick.getRawAxis(OI.driverJoystickTurnRightAxis);				
-    double zRotation = leftTrigger - rightTrigger;
-
-    if(OI.driverButtonB.get()){
-      zRotation = zRotation * RobotMap.slowSpeedModifier;
-      xSpeed = xSpeed *  RobotMap.slowSpeedModifier;
+    double POV = Robot.oi.driverJoystick.getPOV();
+    SmartDashboard.putNumber("POV",POV);
+    if(POV == LastPOV)
+      return;
+    LastPOV = POV;
+    if(POV == 0){
+      Robot.elevator.setSetpoint(Robot.elevator.getSetpoint() + 125);      
+    } else if (POV == 180){
+      Robot.elevator.setSetpoint(Robot.elevator.getSetpoint() - 125);
     }
-    Robot.driveTrain.arcadeDrive(xSpeed, zRotation);
-
-
-    //publish lidar to dashboard
-    double distance = Robot.driveTrain.getDistance();
-    SmartDashboard.putNumber("Distance (in)", distance);
-    int distanceCM = Robot.driveTrain.getDistanceCM();
-    SmartDashboard.putNumber("Distance (cm)", distanceCM);
   }
 
-  // Make this return true when this Command no longer needs to run execute
+  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
     return false;
@@ -56,14 +51,11 @@ public class ArcadeDriveWithJoystick extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.driveTrain.arcadeDrive(0, 0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }
-

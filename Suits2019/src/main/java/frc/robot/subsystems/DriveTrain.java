@@ -9,7 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -20,11 +20,11 @@ import frc.robot.lib.*;
 import edu.wpi.first.wpilibj.I2C;
 
 public class DriveTrain extends Subsystem {
-  private WPI_TalonSRX frontLeftDriveMotor;
-	private WPI_TalonSRX rearLeftDriveMotor;
+  private WPI_VictorSPX frontLeftDriveMotor;
+	private WPI_VictorSPX rearLeftDriveMotor;
 	private SpeedControllerGroup leftDriveMotorGroup;	
-	private WPI_TalonSRX frontRightDriveMotor;
-	private WPI_TalonSRX rearRightDriveMotor;	
+	private WPI_VictorSPX frontRightDriveMotor;
+	private WPI_VictorSPX rearRightDriveMotor;	
   private SpeedControllerGroup rightDriveMotorGroup;
   private DifferentialDrive drivetrain;
   
@@ -32,13 +32,13 @@ public class DriveTrain extends Subsystem {
   
 
   public DriveTrain(){
-    frontLeftDriveMotor = new WPI_TalonSRX(RobotMap.frontLeftDriveMotorCanID);
-    rearLeftDriveMotor = new WPI_TalonSRX(RobotMap.rearLeftDriveMotorCanID);
+    frontLeftDriveMotor = new WPI_VictorSPX(RobotMap.frontLeftDriveMotorCanID);
+    rearLeftDriveMotor = new WPI_VictorSPX(RobotMap.rearLeftDriveMotorCanID);
 	  leftDriveMotorGroup = new SpeedControllerGroup(frontLeftDriveMotor, rearLeftDriveMotor);
     
-    frontRightDriveMotor = new WPI_TalonSRX(RobotMap.frontRightDriveMotorCanID);
+    frontRightDriveMotor = new WPI_VictorSPX(RobotMap.frontRightDriveMotorCanID);
     frontRightDriveMotor.setInverted(true);
-    rearRightDriveMotor = new WPI_TalonSRX(RobotMap.rearRightDriveMotorCanID);
+    rearRightDriveMotor = new WPI_VictorSPX(RobotMap.rearRightDriveMotorCanID);
     rearRightDriveMotor.setInverted(true);
     rightDriveMotorGroup = new SpeedControllerGroup(frontRightDriveMotor, rearRightDriveMotor);
     drivetrain = new DifferentialDrive(leftDriveMotorGroup, rightDriveMotorGroup);
