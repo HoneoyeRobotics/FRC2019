@@ -43,4 +43,9 @@ public class RobotMap {
     public static final double armFwdRevEncoderMax = 100;
     public static final double armFwdRevDeadband = 10;
     public static final double armFwdRevAutoSpeed = 0.5;
+
+    public static final double visionCenterDeadband = 5;
+    public static final double visionTapeLengthRange = 15;
+    public static final double visionFwdSpeed = 0.5;
+    public static final double visionRotateSpeed = 0.5;
 }

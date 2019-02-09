@@ -65,8 +65,21 @@ public class Elevator extends PIDSubsystem {
     }
   }
 
+  public String getSetpointDescr(int Setpoint){
+    switch(Setpoint){
+      case 1:
+        return "Bottom (1)";        
+      case 2: 
+        return "Middle (2)";
+      case 3:
+        return "Top (3)";
+      default:
+        return "Floor (0)";
+    }
+  }
   public void displayElevatorSetpoint(){
-
+      SmartDashboard.putString("Ele. Current Setpoint", getSetpointDescr(CurrentElevatorPosition));
+      SmartDashboard.putString("Ele. Requested Setpoint", getSetpointDescr(ElevatorPosition));
   }
 
   public void runToSetpoint(){

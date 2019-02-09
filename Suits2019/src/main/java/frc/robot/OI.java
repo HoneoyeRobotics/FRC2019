@@ -54,11 +54,13 @@ public class OI {
 
   public OI() {    
 
+    driverButtonY.whenPressed(new DriveToCenter());
+    
     secondaryButtonA.whenPressed(new RunElevator());
     secondaryButtonB.whenPressed(new ToggleElevator());
     secondaryButtonLB.whenPressed(new ArmsFullIn());
     secondaryButtonRB.whenPressed(new ArmsFullOut());
-    a
+    
 
   }
 }
