@@ -37,5 +37,10 @@ public class RobotMap {
     public static final double slowSpeedModifier = 0.5;
 
 
-    
+    public static final double[] ballEncoderPositions = { 0, 150, 250, 550 };
+    public static final double[] hatchEncoderPositions = { 0, 100, 200, 500 };
+    public static final double armFwdRevEncoderMin = 10;
+    public static final double armFwdRevEncoderMax = 100;
+    public static final double armFwdRevDeadband = 10;
+    public static final double armFwdRevAutoSpeed = 0.5;
 }

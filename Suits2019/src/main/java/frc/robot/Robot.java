@@ -35,8 +35,8 @@ public class Robot extends TimedRobot {
   public static OI oi;
   Thread m_visionThread;
   public static Elevator elevator;
-  public NetworkTable table;
-  public Arms arms;// = new Arms();
+  public static NetworkTable table;
+  public static Arms arms;// = new Arms();
 
   /**
    * This function is run when the robot is first started up and should be

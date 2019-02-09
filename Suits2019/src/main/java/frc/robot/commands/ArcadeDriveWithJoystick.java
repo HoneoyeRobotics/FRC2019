@@ -9,7 +9,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
@@ -28,12 +27,12 @@ public class ArcadeDriveWithJoystick extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double xSpeed = OI.driverJoystick.getRawAxis(OI.driverJoystickForwardAxis);
-    double leftTrigger= OI.driverJoystick.getRawAxis(OI.driverJoystickTurnLeftAxis);
-		double rightTrigger = OI.driverJoystick.getRawAxis(OI.driverJoystickTurnRightAxis);				
+    double xSpeed = Robot.oi.driverJoystick.getRawAxis(Robot.oi.driverJoystickForwardAxis);
+    double leftTrigger= Robot.oi.driverJoystick.getRawAxis(Robot.oi.driverJoystickTurnLeftAxis);
+		double rightTrigger = Robot.oi.driverJoystick.getRawAxis(Robot.oi.driverJoystickTurnRightAxis);				
     double zRotation = leftTrigger - rightTrigger;
 
-    if(OI.driverButtonB.get()){
+    if(Robot.oi.driverButtonB.get()){
       zRotation = zRotation * RobotMap.slowSpeedModifier;
       xSpeed = xSpeed *  RobotMap.slowSpeedModifier;
     }

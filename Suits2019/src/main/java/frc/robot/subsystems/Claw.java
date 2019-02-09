@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import  frc.robot.lib.*;
+import frc.robot.commands.*;
 
 /**
  * Add your docs here.
@@ -79,6 +80,7 @@ public class Claw extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new RunClawWheels());
   }
 
 

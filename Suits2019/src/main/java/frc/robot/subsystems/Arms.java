@@ -15,6 +15,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.commands.ArmsInOut;
 
 /**
  * Add your docs here.
@@ -45,13 +46,16 @@ public class Arms extends Subsystem {
     //armFwdRevEncoder.reset();
   }
 
+  public void stop(){
+    armFwdRevMotor.set(ControlMode.PercentOutput, 0);
+  }
+
   public void moveArms(double speed){
     armFwdRevMotor.set(ControlMode.PercentOutput, speed);
   }
 
   @Override
   public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new ArmsInOut());
   }
 }

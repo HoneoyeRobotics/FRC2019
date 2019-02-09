@@ -17,43 +17,48 @@ import frc.robot.commands.*;
  */
 public class OI {
  
-  public static final int driverJoystickForwardAxis = 1;  //left stick, left and right
-  public static final int driverJoystickTurnLeftAxis = 2;   // left trigger
-  public static final int driverJoystickTurnRightAxis = 3;   // right trigger
+  public final int driverJoystickForwardAxis = 1;  //left stick, left and right
+  public final int driverJoystickTurnLeftAxis = 2;   // left trigger
+  public final int driverJoystickTurnRightAxis = 3;   // right trigger
 
-  public static final int armWheelAxis = 4; //right stick, x axis
-  public static final int elbowAxis = 5; //right stick, y axis
+  public final int armWheelAxis = 4; //right stick, x axis
+  public final int elbowAxis = 5; //right stick, y axis
   
-  public static Joystick driverJoystick = new Joystick(0); 
-  public static Joystick secondaryJoystick = new Joystick(1);
+  public Joystick driverJoystick = new Joystick(0); 
+  public Joystick secondaryJoystick = new Joystick(1);
 
-  public static JoystickButton driverButtonA = new JoystickButton(driverJoystick, 1);
-  public static JoystickButton driverButtonB  = new JoystickButton(driverJoystick, 2);
-  public static JoystickButton driverButtonX = new JoystickButton(driverJoystick, 3);
-  public static JoystickButton driverButtonY = new JoystickButton(driverJoystick, 4);
-
-
-
-  public static JoystickButton secondaryButtonA = new JoystickButton(secondaryJoystick, 1);
-  public static JoystickButton secondaryButtonB  = new JoystickButton(secondaryJoystick, 2);
-  public static JoystickButton secondaryButtonX = new JoystickButton(secondaryJoystick, 3);
-  public static JoystickButton secondaryButtonY = new JoystickButton(secondaryJoystick, 4);
-  public static JoystickButton secondaryButtonLB = new JoystickButton(secondaryJoystick, 5);
-  public static JoystickButton secondaryButtonRB  = new JoystickButton(secondaryJoystick, 6);
-  public static JoystickButton secondaryButtonBack = new JoystickButton(secondaryJoystick, 7);
-  public static JoystickButton secondaryButtonStart = new JoystickButton(secondaryJoystick, 8);
+  public JoystickButton driverButtonA = new JoystickButton(driverJoystick, 1);
+  public JoystickButton driverButtonB  = new JoystickButton(driverJoystick, 2);
+  public JoystickButton driverButtonX = new JoystickButton(driverJoystick, 3);
+  public JoystickButton driverButtonY = new JoystickButton(driverJoystick, 4);
 
 
-  public static final int secondaryLStickXAxis = 0;
-  public static final int secondaryLStickYAxis = 1;
-  public static final int secondaryLTAxis = 2;
-  public static final int secondaryRTAxis = 3;
-  public static final int secondaryRStickXAxis = 4;
-  public static final int secondaryRStickYAxis = 5;
+
+  public JoystickButton secondaryButtonA = new JoystickButton(secondaryJoystick, 1);
+  public JoystickButton secondaryButtonB  = new JoystickButton(secondaryJoystick, 2);
+  public JoystickButton secondaryButtonX = new JoystickButton(secondaryJoystick, 3);
+  public JoystickButton secondaryButtonY = new JoystickButton(secondaryJoystick, 4);
+  public JoystickButton secondaryButtonLB = new JoystickButton(secondaryJoystick, 5);
+  public JoystickButton secondaryButtonRB  = new JoystickButton(secondaryJoystick, 6);
+  public JoystickButton secondaryButtonBack = new JoystickButton(secondaryJoystick, 7);
+  public JoystickButton secondaryButtonStart = new JoystickButton(secondaryJoystick, 8);
+
+
+  public final int secondaryLStickXAxis = 0;
+  public final int secondaryLStickYAxis = 1;
+  public final int secondaryLTAxis = 2;
+  public final int secondaryRTAxis = 3;
+  public final int secondaryRStickXAxis = 4;
+  public final int secondaryRStickYAxis = 5;
 
 
   public OI() {    
 
+    secondaryButtonA.whenPressed(new RunElevator());
+    secondaryButtonB.whenPressed(new ToggleElevator());
+    secondaryButtonLB.whenPressed(new ArmsFullIn());
+    secondaryButtonRB.whenPressed(new ArmsFullOut());
+    a
 
   }
 }

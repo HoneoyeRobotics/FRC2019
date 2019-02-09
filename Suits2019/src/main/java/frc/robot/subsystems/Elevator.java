@@ -12,8 +12,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.*;
+import frc.robot.lib.ClawInOutState;
 
 /**
  * Add your docs here.
@@ -23,6 +25,8 @@ public class Elevator extends PIDSubsystem {
 
   private Encoder elevatorEncoder;
   private WPI_VictorSPX elevatorMotor;
+  private int ElevatorPosition = 0;
+  private int CurrentElevatorPosition = 0;
 
   public Elevator() {
     // Intert a subsystem name and PID values here
@@ -37,11 +41,42 @@ public class Elevator extends PIDSubsystem {
 
     // 498 pulses per rotation.  Set distance accordingly so we read encoder pulses.
     elevatorEncoder.setDistancePerPulse(498/360);
+    setSetpoint(0);
 
     // Use these to get going:
     // setSetpoint() - Sets where the PID controller should move the system
     // to
     // enable() - Enables the PID controller.
+  }
+
+  public int getElevatorSetpoint(){
+    return ElevatorPosition;
+  }
+
+  public void moveElevatorUp(){
+    if(ElevatorPosition < 3) {
+      ElevatorPosition++;
+    }
+  }
+
+  public void moveElevatorDown() {
+    if(ElevatorPosition > 0){
+      ElevatorPosition--;
+    }
+  }
+
+  public void displayElevatorSetpoint(){
+
+  }
+
+  public void runToSetpoint(){
+    //if claw = out then we have a hatch
+    if(Robot.claw.clawInOutState == ClawInOutState.OUT){
+      setSetpoint(RobotMap.hatchEncoderPositions[ElevatorPosition]);
+    } else {
+      setSetpoint(RobotMap.ballEncoderPositions[ElevatorPosition]);
+    }
+    CurrentElevatorPosition = ElevatorPosition;
   }
 
   @Override
