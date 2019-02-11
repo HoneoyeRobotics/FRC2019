@@ -56,7 +56,7 @@ public class DriveToCenter extends Command {
     Robot.driveTrain.arcadeDrive(xSpeed, zRotation);
 
     if(xSpeed == 0 && zRotation == 0){
-      return;
+      Done = true;
     }
 
   }
