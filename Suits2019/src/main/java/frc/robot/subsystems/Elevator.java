@@ -16,6 +16,7 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.*;
 import frc.robot.lib.ClawInOutState;
+import frc.robot.lib.GamePiece;
 
 /**
  * Add your docs here.
@@ -84,7 +85,7 @@ public class Elevator extends PIDSubsystem {
 
   public void runToSetpoint(){
     //if claw = out then we have a hatch
-    if(Robot.claw.clawInOutState == ClawInOutState.OUT){
+    if(Robot.claw.currentGamePiece == GamePiece.Hatch){
       setSetpoint(RobotMap.hatchEncoderPositions[ElevatorPosition]);
     } else {
       setSetpoint(RobotMap.ballEncoderPositions[ElevatorPosition]);
