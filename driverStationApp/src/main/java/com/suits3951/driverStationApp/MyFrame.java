@@ -10,6 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.suits3951.driverStationApp.GripPipeline.Line;
+
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
@@ -68,19 +70,23 @@ public class MyFrame extends JFrame {
         ntInstance.startDSClient();  // recommended if running on DS computer; this gets the robot IP from the DS
         nteInRange = nTable.getEntry("inRange");
         nteDistance = nTable.getEntry("distance");
+        ntePixelsOff = nTable.getEntry("pixelsOff");
        new MyThread().start();
     }
     private NetworkTableInstance ntInstance;
     private NetworkTable nTable;
     private NetworkTableEntry nteInRange;
     private NetworkTableEntry nteDistance;
+    private NetworkTableEntry ntePixelsOff;
 
     private VideoCap videoCap = new VideoCap();
 
     GripPipeline pipeline = new GripPipeline();
 
     Point topPoint1 = new Point(320,240);
+    Point rightPoint1 = new Point(0,0);    
     Point topPoint2 = new Point(320,240);
+    Point rightPoint2 = new Point(0,0);
     double center = 0;
     double length = 0;
     double lastCenter = 0;
@@ -100,7 +106,9 @@ public class MyFrame extends JFrame {
         ArrayList<MatOfPoint> contours = pipeline.findContoursOutput();
 
          topPoint1 = new Point(320,240);
+         rightPoint1 = new Point(0,0);
          topPoint2 = new Point(320,240);
+         rightPoint2 = new Point(0,0);
         for (MatOfPoint contour : contours) {
             double area = Imgproc.contourArea(contour);
 
@@ -112,6 +120,7 @@ public class MyFrame extends JFrame {
             //MatOfPoint points = new MatOfPoint(pointMat);
             
             Point topPoint = new Point(320,240);
+            Point rightPoint = new Point(0,0);
             
             Imgproc.convexHull(contour, hull);
             Point[] hp = new Point[hull.height()];
@@ -123,13 +132,18 @@ public class MyFrame extends JFrame {
                 if(currPoint.y < topPoint.y && currPoint.y > 10){
                     topPoint = currPoint;
                 }
+                if(currPoint.x > rightPoint.x){
+                    rightPoint = currPoint;
+                }
             }
             if(point == 1){
                 topPoint1 = topPoint;
+                rightPoint1 = rightPoint;
                 point++;
             }
             else{
                 topPoint2 = topPoint;
+                rightPoint2 = rightPoint;
             }
 
 
@@ -148,6 +162,20 @@ public class MyFrame extends JFrame {
             center = topPoint2.x + (length / 2);
         }
 
+        Line tapeTop = new Line(topPoint1.x, topPoint1.y, rightPoint1.x, rightPoint1.y);
+        //formula found from https://wpilib.screenstepslive.com/s/currentCS/m/vision/l/288985-identifying-and-processing-the-targets
+        double width = tapeTop.length();
+        double tapeWidthIn = 2.0;
+        double tapeWidthFt = tapeWidthIn / 12;
+        double fovPixels = 320;
+        double cameraViewAngle = 41.7; //this in their example what worked.
+        //double cameraViewAngle = 54; //this is set my the camera
+        double distance = tapeWidthFt * fovPixels /(2 * width * Math.tan(cameraViewAngle));
+
+        
+
+
+
         distanceFromCenter =  center - 160;
 
         if(distanceFromCenter < 0){
@@ -165,10 +193,9 @@ public class MyFrame extends JFrame {
             "; Center: " + center + "; length: " + length + "; DFC: " + distanceFromCenter +  
             "; close? " + closeEnough + "\n");
 
-            nteDistance.setDouble(distanceFromCenter);
+            nteDistance.setDouble(distance);
             nteInRange.setBoolean(closeEnough);
-        
-            
+            ntePixelsOff.setDouble(distanceFromCenter);                                    
         }
         // if(lines.size() != numlines){
         //     System.out.print("Num Lines now " + lines.size() + "\n");
