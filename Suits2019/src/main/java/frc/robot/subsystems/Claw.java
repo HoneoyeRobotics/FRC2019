@@ -7,7 +7,7 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -28,22 +28,24 @@ public class Claw extends Subsystem {
   public ClawInOutState clawInOutState;
   private DoubleSolenoid  clawInOutSolenoid;
   public GamePiece currentGamePiece = GamePiece.None;
-  private WPI_TalonSRX leftArmWheelMotor;
-  private WPI_TalonSRX rightArmWheelMotor;
+  private WPI_VictorSPX leftArmWheelMotor;
+  private WPI_VictorSPX rightArmWheelMotor;
   private SpeedControllerGroup armWheelMotors;
 
   public Claw(){
-    leftArmWheelMotor = new WPI_TalonSRX(RobotMap.leftArmWheelMotorCanID);
-    rightArmWheelMotor = new WPI_TalonSRX(RobotMap.rightArmWheelMotorCanID);
-    rightArmWheelMotor.setInverted(true);
-
+    leftArmWheelMotor = new WPI_VictorSPX(RobotMap.leftArmWheelMotorCanID);
+    rightArmWheelMotor = new WPI_VictorSPX(RobotMap.rightArmWheelMotorCanID);
+    leftArmWheelMotor.setInverted(true);
+    
+    SmartDashboard.putData("Wheel L", leftArmWheelMotor);
+    SmartDashboard.putData("Wheel R", rightArmWheelMotor);
     armWheelMotors = new SpeedControllerGroup(leftArmWheelMotor, rightArmWheelMotor);
-
+    clawInOutSolenoid = new DoubleSolenoid (RobotMap.pneumaticControlModuleID, RobotMap.clawOutPCMID, RobotMap.clawInPCMID);
     SmartDashboard.putData("Claw In/Out Solenoid", clawInOutSolenoid);
     compressor = new Compressor(RobotMap.pneumaticControlModuleID);
     compressor.setClosedLoopControl(true);
     
-    clawInOutSolenoid = new DoubleSolenoid (RobotMap.pneumaticControlModuleID, RobotMap.clawOutPCMID, RobotMap.clawInPCMID);
+
   }
 
   public void openClaw(){

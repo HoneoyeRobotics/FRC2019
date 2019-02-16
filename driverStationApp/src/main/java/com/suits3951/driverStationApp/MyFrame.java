@@ -26,6 +26,8 @@ import javax.swing.JTextArea;
 public class MyFrame extends JFrame {
     private JPanel contentPanel;
     private JTextArea infoTextArea;
+    private int cameraWidth = 320;
+    private int cameraHeight = 240;
     public MyFrame() {
      
         
@@ -83,9 +85,9 @@ public class MyFrame extends JFrame {
 
     GripPipeline pipeline = new GripPipeline();
 
-    Point topPoint1 = new Point(320,240);
+    Point topPoint1 = new Point(cameraWidth,cameraHeight);
     Point rightPoint1 = new Point(0,0);    
-    Point topPoint2 = new Point(320,240);
+    Point topPoint2 = new Point(cameraWidth,cameraHeight);
     Point rightPoint2 = new Point(0,0);
     double center = 0;
     double length = 0;
@@ -105,9 +107,9 @@ public class MyFrame extends JFrame {
 
         ArrayList<MatOfPoint> contours = pipeline.findContoursOutput();
 
-         topPoint1 = new Point(320,240);
+         topPoint1 = new Point(cameraWidth,cameraHeight);
          rightPoint1 = new Point(0,0);
-         topPoint2 = new Point(320,240);
+         topPoint2 = new Point(cameraWidth,cameraHeight);
          rightPoint2 = new Point(0,0);
         for (MatOfPoint contour : contours) {
             double area = Imgproc.contourArea(contour);
@@ -119,7 +121,7 @@ public class MyFrame extends JFrame {
             MatOfInt hull = new MatOfInt();
             //MatOfPoint points = new MatOfPoint(pointMat);
             
-            Point topPoint = new Point(320,240);
+            Point topPoint = new Point(cameraWidth,cameraHeight);
             Point rightPoint = new Point(0,0);
             
             Imgproc.convexHull(contour, hull);
@@ -167,16 +169,25 @@ public class MyFrame extends JFrame {
         double width = tapeTop.length();
         double tapeWidthIn = 2.0;
         double tapeWidthFt = tapeWidthIn / 12;
-        double fovPixels = 320;
+        double fovPixels = cameraWidth;
         double cameraViewAngle = 41.7; //this in their example what worked.
         //double cameraViewAngle = 54; //this is set my the camera
-        double distance = tapeWidthFt * fovPixels /(2 * width * Math.tan(cameraViewAngle));
-
+        double  bottomMath = fovPixels /(2 * width * Math.tan(cameraViewAngle));
+        double distance = tapeWidthFt * bottomMath;
         
+        double targetWidth = 2; // width of tape
+        double targetPixelWidth = width;
+        //double cameraFieldOfView = 47.5;
+        double cameraFieldOfView = 48.6;
+        distance = (((targetWidth*cameraWidth)/targetPixelWidth)/2)/Math.tan(((cameraFieldOfView*3.14159)/180.0)/2.0);
+
+
+    //distance in feet!
+    //SetVariable "/SmartDashboard/Frisbee_Distance", CInt((distance*100)/12)/100
 
 
 
-        distanceFromCenter =  center - 160;
+        distanceFromCenter =  center - (cameraWidth /  2);
 
         if(distanceFromCenter < 0){
             closeEnough = (distanceFromCenter > -10);
@@ -191,7 +202,7 @@ public class MyFrame extends JFrame {
 
             System.out.print("Points are now " + topPoint1.x + "," + topPoint1.y + " and " + topPoint2.x + "," + topPoint2.y + 
             "; Center: " + center + "; length: " + length + "; DFC: " + distanceFromCenter +  
-            "; close? " + closeEnough + "\n");
+            "; close? " + closeEnough + ";  Distance: " +  distance + "; Tape width: "  + width + "\n");
 
             nteDistance.setDouble(distance);
             nteInRange.setBoolean(closeEnough);

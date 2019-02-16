@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
@@ -44,32 +43,35 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-   // driveTrain  = new DriveTrain();
+    driveTrain  = new DriveTrain();
     claw = new Claw();
     elevator = new Elevator();
     arms = new Arms();
     oi = new OI();
     //add commands to dashboard    
+    SmartDashboard.putData(Robot.driveTrain);
+    SmartDashboard.putData(Robot.claw);
     SmartDashboard.putData(Robot.elevator);
+    SmartDashboard.putData(Robot.arms);
+    
     SmartDashboard.putData("Open Claw", new OpenClaw());    
     SmartDashboard.putData("Close Claw", new CloseClaw());
     table = NetworkTable.getTable("VisionTable");
-    cameraInit();
+   // cameraInit();
   }
 
   public void cameraInit() {
     m_visionThread = new Thread(() -> {
       // Get the Axis camera from CameraServer
       AxisCamera camera
-          = CameraServer.getInstance().addAxisCamera("axis-camera.local");
+          = CameraServer.getInstance().addAxisCamera("10.39.51.11");
       // Set the resolution
-      camera.setResolution(640, 480);
+      camera.setResolution(320, 240);
 
       // Get a CvSink. This will capture Mats from the camera
       CvSink cvSink = CameraServer.getInstance().getVideo();
       // Setup a CvSource. This will send images back to the Dashboard
-      CvSource outputStream
-          = CameraServer.getInstance().putVideo("Rectangle", 640, 480);
+      CvSource outputStream = CameraServer.getInstance().putVideo("Rectangle", 320, 240);
 
       // Mats are very memory expensive. Lets reuse this Mat.
       Mat mat = new Mat();
@@ -113,7 +115,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    elevator.disable();
+    //elevator.disable();
   }
 
   @Override
@@ -132,7 +134,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    Robot.elevator.initialize();
+    //Robot.elevator.initialize();
   }
 
   /**

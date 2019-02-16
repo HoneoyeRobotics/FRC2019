@@ -10,11 +10,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class ArmsInOut extends Command {
-  public ArmsInOut() {
-    super("ArmsInOut");
-    requires(Robot.arms);
-    setInterruptible(true);
+public class RunElevatorJoystick extends Command {
+  public RunElevatorJoystick() {
+    requires(Robot.elevator);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -27,9 +25,7 @@ public class ArmsInOut extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double motorSpeed = Robot.oi.secondaryJoystick.getRawAxis(Robot.oi.secondaryRTAxis);
-    motorSpeed = motorSpeed - Robot.oi.secondaryJoystick.getRawAxis(Robot.oi.secondaryLTAxis);
-    Robot.arms.moveArms(motorSpeed);
+    Robot.elevator.runElevator(Robot.oi.secondaryJoystick.getRawAxis(Robot.oi.secondaryRStickYAxis));
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -41,13 +37,12 @@ public class ArmsInOut extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.arms.stop();
+    Robot.elevator.runElevator(0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }

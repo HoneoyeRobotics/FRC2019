@@ -33,7 +33,9 @@ public class DriveTrain extends Subsystem {
 
   public DriveTrain(){
     frontLeftDriveMotor = new WPI_VictorSPX(RobotMap.frontLeftDriveMotorCanID);
+    frontLeftDriveMotor.setInverted(true);
     rearLeftDriveMotor = new WPI_VictorSPX(RobotMap.rearLeftDriveMotorCanID);
+    rearLeftDriveMotor.setInverted(true);
 	  leftDriveMotorGroup = new SpeedControllerGroup(frontLeftDriveMotor, rearLeftDriveMotor);
     
     frontRightDriveMotor = new WPI_VictorSPX(RobotMap.frontRightDriveMotorCanID);

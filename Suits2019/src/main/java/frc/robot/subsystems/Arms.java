@@ -11,9 +11,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.ArmsInOut;
 
@@ -33,6 +32,8 @@ public class Arms extends Subsystem {
     armFwdRevMotor.setNeutralMode(NeutralMode.Brake);
     armFwdRevMotor.setSensorPhase(false);
     armFwdRevMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+    
+
     //armFwdRevEncoder = new Encoder(RobotMap.armFwdRevEncoderADIO, RobotMap.armFwdRevEncoderBDIO);
   }
 
@@ -52,6 +53,7 @@ public class Arms extends Subsystem {
 
   public void moveArms(double speed){
     armFwdRevMotor.set(ControlMode.PercentOutput, speed);
+    SmartDashboard.putNumber("ArmMotorSpeed", speed);
   }
 
   @Override
