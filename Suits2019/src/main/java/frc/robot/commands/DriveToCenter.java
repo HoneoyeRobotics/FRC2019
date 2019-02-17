@@ -8,18 +8,21 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.lib.GamePiece;
 
 public class DriveToCenter extends Command {
 
   private boolean Done = false;
   private double centerOffPixels = 0;
-  private double tapeLength = 0;
+  private double distance = 0;
 
   public DriveToCenter() {
     super("DriveToCenter");
     requires(Robot.driveTrain);
+    setInterruptible(true);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -32,18 +35,22 @@ public class DriveToCenter extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    Robot.driveTrain.getVisionData();
     //get data from drivers station
-    centerOffPixels = Robot.table.getNumber("distance", 9999);
+    centerOffPixels = Robot.driveTrain.pixelsOff;
     if(centerOffPixels >= 9999){
       Done = true;
       return;
     }    
 
-    tapeLength = Robot.table.getNumber("tapeLength", 1);
+    distance = Robot.driveTrain.distance;    
+    double targetDistance = RobotMap.visionDistanceFromCamToBumper;
+    targetDistance += (Robot.claw.currentGamePiece == GamePiece.Ball ? RobotMap.visionDistanceBall : RobotMap.visionDistanceHatch);
+
     double xSpeed = 0;
     double zRotation = 0;
 
-    if(tapeLength >= RobotMap.visionTapeLengthRange){
+    if(distance >= targetDistance){
       xSpeed = RobotMap.visionFwdSpeed;
     }
 
@@ -53,6 +60,8 @@ public class DriveToCenter extends Command {
         zRotation = RobotMap.visionRotateSpeed;
     } 
 
+    SmartDashboard.putNumber("xSpeed", xSpeed);
+    SmartDashboard.putNumber("zRotation", zRotation);
     Robot.driveTrain.arcadeDrive(xSpeed, zRotation);
 
     if(xSpeed == 0 && zRotation == 0){

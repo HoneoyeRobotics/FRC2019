@@ -27,14 +27,15 @@ public class OI {
   public Joystick driverJoystick = new Joystick(0); 
   public Joystick secondaryJoystick = new Joystick(1);
 
-  public JoystickButton driverButtonA = new JoystickButton(driverJoystick, 1);
-  public JoystickButton driverButtonB  = new JoystickButton(driverJoystick, 2);
-  public JoystickButton driverButtonX = new JoystickButton(driverJoystick, 3);
-  public JoystickButton driverButtonY = new JoystickButton(driverJoystick, 4);
+  // nyi
+  public JoystickButton driverButtonA = new JoystickButton(driverJoystick, 1);  
+  public JoystickButton driverButtonB  = new JoystickButton(driverJoystick, 2); // drive slow button
+  public JoystickButton driverButtonX = new JoystickButton(driverJoystick, 3);   
+  public JoystickButton driverButtonY = new JoystickButton(driverJoystick, 4); // drive to center
 
 
 
-  public JoystickButton secondaryButtonA = new JoystickButton(secondaryJoystick, 1);
+  public JoystickButton secondaryButtonA = new JoystickButton(secondaryJoystick, 1);  
   public JoystickButton secondaryButtonB  = new JoystickButton(secondaryJoystick, 2);
   public JoystickButton secondaryButtonX = new JoystickButton(secondaryJoystick, 3);
   public JoystickButton secondaryButtonY = new JoystickButton(secondaryJoystick, 4);
@@ -54,15 +55,15 @@ public class OI {
 
   public OI() {    
 
-    //driverButtonY.whenPressed(new DriveToCenter());
+    driverButtonY.whileHeld(new DriveToCenter());
     
     //secondaryButtonA.whenPressed(new RunElevator());
    // secondaryButtonB.whenPressed(new ToggleElevator());
     secondaryButtonLB.whenPressed(new ArmsFullIn());
     secondaryButtonRB.whenPressed(new ArmsFullOut());
     
-    driverButtonX.whenPressed(new OpenClaw());
-    driverButtonY.whenPressed(new CloseClaw());
+    secondaryButtonX.whenPressed(new OpenClaw());
+    secondaryButtonY.whenPressed(new CloseClaw());
 
   }
 }

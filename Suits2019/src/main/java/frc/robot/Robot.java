@@ -15,7 +15,6 @@ import edu.wpi.cscore.*;
 import edu.wpi.first.cameraserver.*;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
@@ -32,9 +31,8 @@ public class Robot extends TimedRobot {
   public static Claw claw;
   public static DriveTrain driveTrain;
   public static OI oi;
-  Thread m_visionThread;
+  //Thread m_visionThread;
   public static Elevator elevator;
-  public static NetworkTable table;
   public static Arms arms;// = new Arms();
 
   /**
@@ -56,10 +54,9 @@ public class Robot extends TimedRobot {
     
     SmartDashboard.putData("Open Claw", new OpenClaw());    
     SmartDashboard.putData("Close Claw", new CloseClaw());
-    table = NetworkTable.getTable("VisionTable");
    // cameraInit();
   }
-
+/*
   public void cameraInit() {
     m_visionThread = new Thread(() -> {
       // Get the Axis camera from CameraServer
@@ -98,7 +95,7 @@ public class Robot extends TimedRobot {
     m_visionThread.setDaemon(true);
     m_visionThread.start();
   }
-
+*/
   /**
    * This function is called every robot packet, no matter the mode. Use
    * this for items like diagnostics that you want ran during disabled,
@@ -143,8 +140,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    SmartDashboard.putBoolean("In Range?", table.getBoolean("inRange", false));
-    SmartDashboard.putNumber("Distance from Center", table.getNumber("distance", 9999));
   }
 
   /**

@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.ArcadeDriveWithJoystick;
 import frc.robot.lib.*;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.I2C;
 
 public class DriveTrain extends Subsystem {
@@ -27,8 +28,12 @@ public class DriveTrain extends Subsystem {
 	private WPI_VictorSPX rearRightDriveMotor;	
   private SpeedControllerGroup rightDriveMotorGroup;
   private DifferentialDrive drivetrain;
-  
-  public LIDARLite distanceSensor;
+  public boolean inRange = false;
+  public double pixelsOff = 9999;
+  public double distance = 9999;
+
+  private NetworkTable visionTable;
+  //public LIDARLite distanceSensor;
   
 
   public DriveTrain(){
@@ -45,30 +50,34 @@ public class DriveTrain extends Subsystem {
     rightDriveMotorGroup = new SpeedControllerGroup(frontRightDriveMotor, rearRightDriveMotor);
     drivetrain = new DifferentialDrive(leftDriveMotorGroup, rightDriveMotorGroup);
     
-    distanceSensor = new LIDARLite (I2C.Port.kOnboard);
-    distanceSensor.startMeasuring();
+    // distanceSensor = new LIDARLite (I2C.Port.kOnboard);
+    // distanceSensor.startMeasuring();
 
-    //put raw data of motor controllers to dashboard
-    SmartDashboard.putData("LF Drive (" + RobotMap.frontLeftDriveMotorCanID + ")", rearLeftDriveMotor);
-    SmartDashboard.putData("LR Drive (" + RobotMap.rearLeftDriveMotorCanID + ")",  rearLeftDriveMotor);
-    SmartDashboard.putData("RF Drive (" + RobotMap.frontRightDriveMotorCanID + ")",  frontRightDriveMotor);
-    SmartDashboard.putData("RR Drive (" + RobotMap.rearRightDriveMotorCanID + ")",  rearRightDriveMotor);
+    visionTable = NetworkTable.getTable("VisionTable");
   }
 
+  public void getVisionData(){
+    inRange =  visionTable.getBoolean("inRange", false);
+    distance = visionTable.getNumber("distance", 9999);
+    pixelsOff = visionTable.getNumber("pixelsOff", 9999);
+    SmartDashboard.putBoolean("In Range?", inRange);
+    SmartDashboard.putNumber("Pixels from Center", pixelsOff);
+    SmartDashboard.putNumber("Distance from Target", distance);
+  }
   
 	public void arcadeDrive(double xSpeed,double zRotation) {				
 		drivetrain.arcadeDrive( xSpeed, zRotation);
   }	
   
-  public int getDistanceCM(){
-    return distanceSensor.getDistance();
-  }
+  // public int getDistanceCM(){
+  //   return distanceSensor.getDistance();
+  // }
 	
-  public double getDistance(){    
-    int distance = distanceSensor.getDistance();
-    double inches = distance / 2.54;
-    return inches;
-  }
+  // public double getDistance(){    
+  //   int distance = distanceSensor.getDistance();
+  //   double inches = distance / 2.54;
+  //   return inches;
+  // }
 
   @Override
   public void initDefaultCommand() {

@@ -37,8 +37,6 @@ public class Claw extends Subsystem {
     rightArmWheelMotor = new WPI_VictorSPX(RobotMap.rightArmWheelMotorCanID);
     leftArmWheelMotor.setInverted(true);
     
-    SmartDashboard.putData("Wheel L", leftArmWheelMotor);
-    SmartDashboard.putData("Wheel R", rightArmWheelMotor);
     armWheelMotors = new SpeedControllerGroup(leftArmWheelMotor, rightArmWheelMotor);
     clawInOutSolenoid = new DoubleSolenoid (RobotMap.pneumaticControlModuleID, RobotMap.clawOutPCMID, RobotMap.clawInPCMID);
     SmartDashboard.putData("Claw In/Out Solenoid", clawInOutSolenoid);

@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
@@ -22,14 +23,20 @@ public class Elevator extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private WPI_TalonSRX elevatorMotor = new WPI_TalonSRX(RobotMap.elevatorMotorCanID);
+  private Encoder elevatorEncoder;
+
+  private WPI_TalonSRX elevatorMotor;
   public Elevator(){
+    elevatorMotor = new WPI_TalonSRX(RobotMap.elevatorMotorCanID);
+    elevatorEncoder = new Encoder(RobotMap.elevatorEncoderADIO, RobotMap.elevatorEncoderBDIO);
     elevatorMotor.setNeutralMode(NeutralMode.Brake);
-SmartDashboard.putData("ElevatorMotor", elevatorMotor);
+    //SmartDashboard.putData("Elevator Motor", elevatorMotor);
+    SmartDashboard.putData("Elevator Encoder", elevatorEncoder);
   }
 
   public void runElevator(double  speed){
     elevatorMotor.set(speed);
+    SmartDashboard.putNumber("Elevator Enc. Value", elevatorEncoder.get());
   }
   @Override
   public void initDefaultCommand() {

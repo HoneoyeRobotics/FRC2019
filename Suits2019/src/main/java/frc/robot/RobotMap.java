@@ -28,10 +28,17 @@ public class RobotMap {
     public static final int clawInPCMID = 0;
     public static final int clawOutPCMID = 1;
 
-    public static final int elevatorEncoderADIO = 0;
-    public static final int elevatorEncoderBDIO = 1;
-    public static final int armFwdRevEncoderADIO = 2;
-    public static final int armFwdRevEncoderBDIO = 3;
+    /* elevator encoder:
+        Orange = Power
+        Blue = A Channel Signal
+        Black = Ground
+        Yellow = B Channel Signal
+    */
+    public static final int elevatorEncoderADIO = 1;
+    public static final int elevatorEncoderBDIO = 0;
+    //not used, using the encoder on the talonsrx
+    //public static final int armFwdRevEncoderADIO = 2;
+    //public static final int armFwdRevEncoderBDIO = 3;
 
 
     public static final double slowSpeedModifier = 0.5;
@@ -45,7 +52,9 @@ public class RobotMap {
     public static final double armFwdRevAutoSpeed = 0.5;
 
     public static final double visionCenterDeadband = 5;
-    public static final double visionTapeLengthRange = 15;
+    public static final double visionDistanceBall = 8.5;
+    public static final double visionDistanceHatch = 3;
+    public static final double visionDistanceFromCamToBumper = 33.5;
     public static final double visionFwdSpeed = 0.5;
     public static final double visionRotateSpeed = 0.5;
 }

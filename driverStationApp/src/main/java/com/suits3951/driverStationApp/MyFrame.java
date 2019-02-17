@@ -114,7 +114,7 @@ public class MyFrame extends JFrame {
         for (MatOfPoint contour : contours) {
             double area = Imgproc.contourArea(contour);
 
-            if(area < 500)
+            if(area < 100)
                 continue;
             //Rect rect = Imgproc.boundingRect(contour);
             
@@ -153,6 +153,11 @@ public class MyFrame extends JFrame {
             String foo = "";
         }
 
+        if((topPoint1.x == cameraWidth && topPoint1.y == cameraHeight) || (topPoint2.x == cameraWidth && topPoint2.y == cameraHeight)){
+            System.out.print("Not found!");
+            g.drawImage(image, 50, 100, this);
+            return;
+        }
         if(topPoint1.x < topPoint2.x){
             
             length = topPoint2.x - topPoint1.x;

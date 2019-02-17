@@ -38,12 +38,7 @@ public class ArcadeDriveWithJoystick extends Command {
     }
     Robot.driveTrain.arcadeDrive(xSpeed, zRotation);
 
-
-    //publish lidar to dashboard
-    double distance = Robot.driveTrain.getDistance();
-    SmartDashboard.putNumber("Distance (in)", distance);
-    int distanceCM = Robot.driveTrain.getDistanceCM();
-    SmartDashboard.putNumber("Distance (cm)", distanceCM);
+    Robot.driveTrain.getVisionData();
   }
 
   // Make this return true when this Command no longer needs to run execute
