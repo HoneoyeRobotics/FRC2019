@@ -5,6 +5,9 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Map;
 import java.awt.Graphics;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -70,16 +73,18 @@ public class MyFrame extends JFrame {
         nTable = ntInstance.getTable("VisionTable");
         ntInstance.startClientTeam(3951);  // where TEAM=190, 294, etc, or use inst.startClient("hostname") or similar
         ntInstance.startDSClient();  // recommended if running on DS computer; this gets the robot IP from the DS
-        nteInRange = nTable.getEntry("inRange");
+        //nteInRange = nTable.getEntry("inRange");
         nteDistance = nTable.getEntry("distance");
         ntePixelsOff = nTable.getEntry("pixelsOff");
+        nteHatch = nTable.getEntry("hatch");
        new MyThread().start();
     }
     private NetworkTableInstance ntInstance;
     private NetworkTable nTable;
-    private NetworkTableEntry nteInRange;
+    //private NetworkTableEntry nteInRange;
     private NetworkTableEntry nteDistance;
     private NetworkTableEntry ntePixelsOff;
+    private NetworkTableEntry nteHatch;
 
     private VideoCap videoCap = new VideoCap();
 
@@ -94,8 +99,14 @@ public class MyFrame extends JFrame {
     double lastCenter = 0;
     boolean closeEnough = false;
     double distanceFromCenter = 0;
+    boolean hatch = false;
+    double hatchMinY = 175;
+    double hatchMaxY = 185;
+    double ballMinY = 80;
+    double ballMaxY = 125;
 
     public void paint(Graphics g){
+        hatch = nteHatch.getBoolean(false);
         g = contentPanel.getGraphics();
         BufferedImage image = videoCap.getOneFrame();
         Mat mat = videoCap.lastMat; //videoCap.getLastMat();
@@ -111,11 +122,13 @@ public class MyFrame extends JFrame {
          rightPoint1 = new Point(0,0);
          topPoint2 = new Point(cameraWidth,cameraHeight);
          rightPoint2 = new Point(0,0);
+         ArrayList<TopLine> points = new ArrayList<TopLine>();
         for (MatOfPoint contour : contours) {
             double area = Imgproc.contourArea(contour);
 
-            if(area < 100)
-                continue;
+            // if(area < 25)
+            //     continue;
+          
             //Rect rect = Imgproc.boundingRect(contour);
             
             MatOfInt hull = new MatOfInt();
@@ -138,26 +151,74 @@ public class MyFrame extends JFrame {
                     rightPoint = currPoint;
                 }
             }
-            if(point == 1){
-                topPoint1 = topPoint;
-                rightPoint1 = rightPoint;
-                point++;
+
+            //filter out most of the noise automatically
+            boolean good = false;
+            if(hatch == true){
+                good = topPoint.y >= hatchMinY && topPoint.y <= hatchMaxY;
             }
             else{
-                topPoint2 = topPoint;
-                rightPoint2 = rightPoint;
+                good = topPoint.y >= ballMinY && topPoint.y <= ballMaxY;
+            }
+            if(good == false){
+                continue;
             }
 
-
-
-            String foo = "";
+            points.add(new TopLine(topPoint, rightPoint));                  
         }
-
-        if((topPoint1.x == cameraWidth && topPoint1.y == cameraHeight) || (topPoint2.x == cameraWidth && topPoint2.y == cameraHeight)){
-            System.out.print("Not found!");
+  
+        if(points.size() < 2){
+            // if((topPoint1.x == cameraWidth && topPoint1.y == cameraHeight) || (topPoint2.x == cameraWidth && topPoint2.y == cameraHeight)){
+            //     System.out.print("Not found!");
+            //     //g.drawImage(image, 50, 100, this);
+            //     return;
+            // }
+            System.out.print("Only found " + points.size() + " points.\n");
             g.drawImage(image, 50, 100, this);
             return;
+        } else if(points.size() == 2){
+            //2 points
+            
+            topPoint1 = points.get(0).topPoint;
+            rightPoint1 = points.get(0).rightPoint;
+            topPoint2 = points.get(1).topPoint;
+            rightPoint2 = points.get(1).rightPoint;
+        } else {
+            //more than 2 points... lets figure this junk out.
+           ArrayList<SimilarHeightObjects> topYs = new ArrayList<SimilarHeightObjects>();
+           double lineDeadband = 2;
+           for (TopLine line : points) {
+               boolean found = false;
+               for (SimilarHeightObjects currentY : topYs) {
+                if(line.topPoint.y <= currentY.y + lineDeadband && line.topPoint.y >= currentY.y - lineDeadband){
+                    currentY.num++;
+                    currentY.lines.add(line);
+                    found = true;
+                   }
+               }
+             
+               if(found == false){
+                topYs.add(new SimilarHeightObjects(line.topPoint.y, 1, line));
+               }
+           }
+
+           // now we have a list of points, get the one with 2
+
+           SimilarHeightObjects goodY = new SimilarHeightObjects(0,0, null);
+           for (SimilarHeightObjects topY : topYs) {
+               if(topY.num > goodY.num){
+                   goodY = topY;
+               }
+           }
+           //found the good Ys now get points;
+           if(goodY.num >= 2){
+            topPoint1 = goodY.lines.get(0).topPoint;
+            rightPoint1 = goodY.lines.get(0).rightPoint;
+            topPoint2 = goodY.lines.get(1).topPoint;
+            rightPoint2 = goodY.lines.get(1).rightPoint;
+           }
         }
+        
         if(topPoint1.x < topPoint2.x){
             
             length = topPoint2.x - topPoint1.x;
@@ -210,7 +271,7 @@ public class MyFrame extends JFrame {
             "; close? " + closeEnough + ";  Distance: " +  distance + "; Tape width: "  + width + "\n");
 
             nteDistance.setDouble(distance);
-            nteInRange.setBoolean(closeEnough);
+           // nteInRange.setBoolean(closeEnough);
             ntePixelsOff.setDouble(distanceFromCenter);                                    
         }
         // if(lines.size() != numlines){
@@ -234,7 +295,7 @@ public class MyFrame extends JFrame {
             for (;;){
                 repaint();
                 try {                     
-                    Thread.sleep(100);                                
+                    Thread.sleep(50);                                
                     System.gc(); 
 
                 } catch (InterruptedException e) {    }

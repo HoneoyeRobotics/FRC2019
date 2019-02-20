@@ -43,9 +43,14 @@ public class GripPipeline {
 	public void process(Mat source0) {
 		// Step HSV_Threshold0:
 		Mat hsvThresholdInput = source0;
-		double[] hsvThresholdHue = {63.12949640287769, 110.88737201365187};
-		double[] hsvThresholdSaturation = {52.74280575539568, 255.0};
-		double[] hsvThresholdValue = {181.16007194244605, 255.0};
+
+		// double[] hsvThresholdHue = {63.12949640287769, 110.88737201365187};
+		// double[] hsvThresholdSaturation = {52.74280575539568, 255.0};
+		// double[] hsvThresholdValue = {181.16007194244605, 255.0};
+
+		double[] hsvThresholdHue = {76.0, 119.0};
+		double[] hsvThresholdSaturation = {175.0, 255.0};
+		double[] hsvThresholdValue = {216.0, 255.0};
 		hsvThreshold(hsvThresholdInput, hsvThresholdHue, hsvThresholdSaturation, hsvThresholdValue, hsvThresholdOutput);
 
 		// Step CV_erode0:
@@ -58,8 +63,8 @@ public class GripPipeline {
 		cvErode(cvErodeSrc, cvErodeKernel, cvErodeAnchor, cvErodeIterations, cvErodeBordertype, cvErodeBordervalue, cvErodeOutput);
 
 		// Step Find_Lines0:
-		Mat findLinesInput = cvErodeOutput;
-		findLines(findLinesInput, findLinesOutput);
+		// Mat findLinesInput = cvErodeOutput;
+		// findLines(findLinesInput, findLinesOutput);
 
 			// Step Find_Contours0:
 			Mat findContoursInput = cvErodeOutput;
@@ -87,9 +92,9 @@ public class GripPipeline {
 	 * This method is a generated getter for the output of a Find_Lines.
 	 * @return ArrayList<Line> output from Find_Lines.
 	 */
-	public ArrayList<Line> findLinesOutput() {
-		return findLinesOutput;
-	}
+	// public ArrayList<Line> findLinesOutput() {
+	// 	return findLinesOutput;
+	// }
 
 
 	/**
@@ -155,24 +160,24 @@ public class GripPipeline {
 	 * @param input The image on which to perform the find lines.
 	 * @param lineList The output where the lines are stored.
 	 */
-	private void findLines(Mat input, ArrayList<Line> lineList) {
-		final LineSegmentDetector lsd = Imgproc.createLineSegmentDetector();
-		final Mat lines = new Mat();
-		lineList.clear();
-		if (input.channels() == 1) {
-			lsd.detect(input, lines);
-		} else {
-			final Mat tmp = new Mat();
-			Imgproc.cvtColor(input, tmp, Imgproc.COLOR_BGR2GRAY);
-			lsd.detect(tmp, lines);
-		}
-		if (!lines.empty()) {
-			for (int i = 0; i < lines.rows(); i++) {
-				lineList.add(new Line(lines.get(i, 0)[0], lines.get(i, 0)[1],
-					lines.get(i, 0)[2], lines.get(i, 0)[3]));
-			}
-		}
-	}
+	// private void findLines(Mat input, ArrayList<Line> lineList) {
+	// 	final LineSegmentDetector lsd = Imgproc.createLineSegmentDetector();
+	// 	final Mat lines = new Mat();
+	// 	lineList.clear();
+	// 	if (input.channels() == 1) {
+	// 		lsd.detect(input, lines);
+	// 	} else {
+	// 		final Mat tmp = new Mat();
+	// 		Imgproc.cvtColor(input, tmp, Imgproc.COLOR_BGR2GRAY);
+	// 		lsd.detect(tmp, lines);
+	// 	}
+	// 	if (!lines.empty()) {
+	// 		for (int i = 0; i < lines.rows(); i++) {
+	// 			lineList.add(new Line(lines.get(i, 0)[0], lines.get(i, 0)[1],
+	// 				lines.get(i, 0)[2], lines.get(i, 0)[3]));
+	// 		}
+	// 	}
+	// }
 
 	
 	/**

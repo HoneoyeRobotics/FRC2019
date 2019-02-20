@@ -10,22 +10,24 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
 
-public class RunElevator extends InstantCommand {
-  public RunElevator() {
-      requires(Robot.elevator);
+/**
+ * Add your docs here.
+ */
+public class MoveElevatorToGetHatch extends InstantCommand {
+  /**
+   * Add your docs here.
+   */
+  public MoveElevatorToGetHatch() {
+    super();
+    requires(Robot.elevator);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
 
-  // Called just before this Command runs the first time
+  // Called once when the command executes
   @Override
   protected void initialize() {
-    // if(Robot.elevator.IsEnabled) {
-    //   Robot.elevator.setDisabled();
-    // }
-    // else {
-      Robot.elevator.setEnabled();
-      Robot.elevator.runToSetpoint();
-    // }
+    Robot.elevator.getHatch();
   }
+
 }

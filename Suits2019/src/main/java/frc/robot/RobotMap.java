@@ -34,8 +34,8 @@ public class RobotMap {
         Black = Ground
         Yellow = B Channel Signal
     */
-    public static final int elevatorEncoderADIO = 1;
-    public static final int elevatorEncoderBDIO = 0;
+    public static final int elevatorEncoderADIO = 0;
+    public static final int elevatorEncoderBDIO = 1;
     //not used, using the encoder on the talonsrx
     //public static final int armFwdRevEncoderADIO = 2;
     //public static final int armFwdRevEncoderBDIO = 3;
@@ -44,17 +44,18 @@ public class RobotMap {
     public static final double slowSpeedModifier = 0.5;
 
 
-    public static final double[] ballEncoderPositions = { 0, 150, 250, 550 };
-    public static final double[] hatchEncoderPositions = { 0, 100, 200, 500 };
-    public static final double armFwdRevEncoderMin = 10;
-    public static final double armFwdRevEncoderMax = 100;
-    public static final double armFwdRevDeadband = 10;
-    public static final double armFwdRevAutoSpeed = 0.5;
+    public static final int[] ballEncoderPositions = { 0, 615, 640, 660 };
+    public static final int[] hatchEncoderPositions = { 0, 400, 420, 440 };
+    public static final int armFwdRevEncoderMin = 1000;
+    public static final int armFwdRevEncoderMax = 1110000;
+    public static final int armFwdRevEncoderHatchMax = 600000;
+    public static final double armFwdRevAutoSpeed = 1;
 
     public static final double visionCenterDeadband = 5;
     public static final double visionDistanceBall = 8.5;
     public static final double visionDistanceHatch = 3;
-    public static final double visionDistanceFromCamToBumper = 33.5;
-    public static final double visionFwdSpeed = 0.5;
-    public static final double visionRotateSpeed = 0.5;
+    public static final double visionDistanceFromCamToBumper = 40;
+    public static final double visionFwdSpeed = 0.75;
+    public static final double visionRotateSpeed = 0.75;
+    public static final double visionDistanceOffPixelsOK = 15;
 }

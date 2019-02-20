@@ -8,19 +8,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
 
-public class ArmsFullIn extends Command {
-  private boolean AtEnd = false;
-
-  public ArmsFullIn() {
-    super("ArmsFullIn");
-    requires(Robot.arms);
-    setInterruptible(true);
+public class RunClawWheelsIn extends Command {
+  public RunClawWheelsIn() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    requires(Robot.claw);
+    setInterruptible(true);
   }
 
   // Called just before this Command runs the first time
@@ -31,27 +26,19 @@ public class ArmsFullIn extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    int armPos = Robot.arms.getArmPosition();
-    if(armPos >= RobotMap.armFwdRevEncoderMin) {
-      Robot.arms.moveArms(RobotMap.armFwdRevAutoSpeed * -1);      
-    }
-    else{
-      Robot.arms.stop(); 
-       }
+    Robot.claw.runArmWheels(-1);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    int pos = Robot.arms.getArmPosition();
-    return pos <= RobotMap.armFwdRevEncoderMin;
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.arms.stop();
-    SmartDashboard.putBoolean("ArmsAutoMove", false);
+    Robot.claw.runArmWheels(0);
   }
 
   // Called when another command which requires one or more of the same

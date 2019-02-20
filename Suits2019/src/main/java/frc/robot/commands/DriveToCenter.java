@@ -62,7 +62,7 @@ public class DriveToCenter extends Command {
 
     SmartDashboard.putNumber("xSpeed", xSpeed);
     SmartDashboard.putNumber("zRotation", zRotation);
-    Robot.driveTrain.arcadeDrive(xSpeed, zRotation);
+    Robot.driveTrain.arcadeDrive(0, zRotation);
 
     if(xSpeed == 0 && zRotation == 0){
       Done = true;

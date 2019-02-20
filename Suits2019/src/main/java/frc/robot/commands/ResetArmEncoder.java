@@ -10,22 +10,24 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
 
-public class RunElevator extends InstantCommand {
-  public RunElevator() {
-      requires(Robot.elevator);
+/**
+ * Add your docs here.
+ */
+public class ResetArmEncoder extends InstantCommand {
+  /**
+   * Add your docs here.
+   */
+  public ResetArmEncoder() {
+    super();
+    requires(Robot.arms);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
 
-  // Called just before this Command runs the first time
+  // Called once when the command executes
   @Override
   protected void initialize() {
-    // if(Robot.elevator.IsEnabled) {
-    //   Robot.elevator.setDisabled();
-    // }
-    // else {
-      Robot.elevator.setEnabled();
-      Robot.elevator.runToSetpoint();
-    // }
+    Robot.arms.resetArmPositionEncoder();
   }
+
 }

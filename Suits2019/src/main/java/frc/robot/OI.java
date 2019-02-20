@@ -57,14 +57,17 @@ public class OI {
 
     driverButtonY.whileHeld(new DriveToCenter());
     
-    //secondaryButtonA.whenPressed(new RunElevator());
-   // secondaryButtonB.whenPressed(new ToggleElevator());
+    secondaryButtonA.whenPressed(new RunElevator());  
+    secondaryButtonB.whileHeld(new GetBall());
+    secondaryButtonB.whenReleased(new CloseClaw());
+
     secondaryButtonLB.whenPressed(new ArmsFullIn());
     secondaryButtonRB.whenPressed(new ArmsFullOut());
     
     secondaryButtonX.whenPressed(new OpenClaw());
     secondaryButtonY.whenPressed(new CloseClaw());
 
+    secondaryButtonBack.whenPressed(new GetHatch());
   }
 }
 
