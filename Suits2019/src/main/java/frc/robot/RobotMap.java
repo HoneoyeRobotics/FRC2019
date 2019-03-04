@@ -41,11 +41,11 @@ public class RobotMap {
     //public static final int armFwdRevEncoderBDIO = 3;
 
 
-    public static final double slowSpeedModifier = 0.5;
+    public static final double slowSpeedModifier = 0.75;
 
 
-    public static final int[] ballEncoderPositions = { 0, 615, 640, 660 };
-    public static final int[] hatchEncoderPositions = { 0, 400, 420, 440 };
+    public static final int[] ballEncoderPositions = { 0, 200, 590, 590 };
+    public static final int[] hatchEncoderPositions = { 0, 200, 400, 400 };
     public static final int armFwdRevEncoderMin = 1000;
     public static final int armFwdRevEncoderMax = 1110000;
     public static final int armFwdRevEncoderHatchMax = 600000;

@@ -24,14 +24,16 @@ public class OI {
   public final int armWheelAxis = 4; //right stick, x axis
   public final int elbowAxis = 5; //right stick, y axis
   
-  public Joystick driverJoystick = new Joystick(0); 
+  // public Joystick driverJoystick = new Joystick(0); 
   public Joystick secondaryJoystick = new Joystick(1);
 
+  public Joystick leftTankStick = new Joystick(0);
+  public Joystick rightTankStick = new Joystick(2);
   // nyi
-  public JoystickButton driverButtonA = new JoystickButton(driverJoystick, 1);  
-  public JoystickButton driverButtonB  = new JoystickButton(driverJoystick, 2); // drive slow button
-  public JoystickButton driverButtonX = new JoystickButton(driverJoystick, 3);   
-  public JoystickButton driverButtonY = new JoystickButton(driverJoystick, 4); // drive to center
+  // public JoystickButton driverButtonA = new JoystickButton(driverJoystick, 1);  
+  // public JoystickButton driverButtonB  = new JoystickButton(driverJoystick, 2); // drive slow button
+  // public JoystickButton driverButtonX = new JoystickButton(driverJoystick, 3);   
+  // public JoystickButton driverButtonY = new JoystickButton(driverJoystick, 4); // drive to center
 
 
 
@@ -55,9 +57,8 @@ public class OI {
 
   public OI() {    
 
-    driverButtonY.whileHeld(new DriveToCenter());
-    
-    secondaryButtonA.whenPressed(new RunElevator());  
+    //driverButtonY.whileHeld(new DriveToCenter());
+
     secondaryButtonB.whileHeld(new GetBall());
     secondaryButtonB.whenReleased(new CloseClaw());
 

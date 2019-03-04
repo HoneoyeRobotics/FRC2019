@@ -27,7 +27,11 @@ public class RunClawWheels extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.claw.runArmWheels(Robot.oi.secondaryJoystick.getRawAxis(Robot.oi.secondaryLStickYAxis));
+    double axisValue = Robot.oi.secondaryJoystick.getRawAxis(Robot.oi.secondaryLStickYAxis);
+    if(axisValue < 0.1 && axisValue > -0.1){
+      axisValue = 0;
+    }
+    Robot.claw.runArmWheels(axisValue);
   }
 
   // Make this return true when this Command no longer needs to run execute()

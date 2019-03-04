@@ -26,18 +26,25 @@ public class ArcadeDriveWithJoystick extends Command {
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
-    double xSpeed = Robot.oi.driverJoystick.getRawAxis(Robot.oi.driverJoystickForwardAxis);
-    double leftTrigger= Robot.oi.driverJoystick.getRawAxis(Robot.oi.driverJoystickTurnLeftAxis);
-		double rightTrigger = Robot.oi.driverJoystick.getRawAxis(Robot.oi.driverJoystickTurnRightAxis);				
-    double zRotation = leftTrigger - rightTrigger;
+   protected void execute() {
+  //   double xSpeed = Robot.oi.driverJoystick.getRawAxis(Robot.oi.driverJoystickForwardAxis);
+  //   double leftTrigger= Robot.oi.driverJoystick.getRawAxis(Robot.oi.driverJoystickTurnLeftAxis);
+	// 	double rightTrigger = Robot.oi.driverJoystick.getRawAxis(Robot.oi.driverJoystickTurnRightAxis);				
+  //   double zRotation = leftTrigger - rightTrigger;
 
-    if(Robot.oi.driverButtonB.get()){
-      zRotation = zRotation * RobotMap.slowSpeedModifier;
-      xSpeed = xSpeed *  RobotMap.slowSpeedModifier;
-    }
-    Robot.driveTrain.arcadeDrive(xSpeed, zRotation);
+  //   if(Robot.oi.driverButtonB.get()){
+  //     if(zRotation > RobotMap.slowSpeedModifier){
+  //       zRotation = RobotMap.slowSpeedModifier;
+  //     }
+  //     if(xSpeed > RobotMap.slowSpeedModifier){
+  //       xSpeed = RobotMap.slowSpeedModifier;
+  //     }
+  //   }
+  //   Robot.driveTrain.arcadeDrive(xSpeed, zRotation);
 
+  double leftSpeed = Robot.oi.leftTankStick.getRawAxis(1);
+  double rightSpeed = Robot.oi.rightTankStick.getRawAxis(1);
+Robot.driveTrain.tankDrive(leftSpeed, rightSpeed);
     Robot.driveTrain.getVisionData();
   }
 

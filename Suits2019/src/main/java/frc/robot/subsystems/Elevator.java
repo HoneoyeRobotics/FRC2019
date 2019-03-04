@@ -45,11 +45,17 @@ public class Elevator extends PIDSubsystem {
     elevatorEncoder.setDistancePerPulse(498/360);
     setSetpoint(0);
   }
-
+  public void goToFloor(){
+    setSetpoint(RobotMap.hatchEncoderPositions[0]);
+    CurrentElevatorPosition = 0;
+    ElevatorPosition = 0;
+    enable();
+    displayElevatorSetpoint();
+  }
   public void getHatch(){
-    setSetpoint(RobotMap.hatchEncoderPositions[1]);
-    CurrentElevatorPosition = 1;
-    ElevatorPosition = 1;
+    setSetpoint(RobotMap.hatchEncoderPositions[2]);
+    CurrentElevatorPosition = 2;
+    ElevatorPosition = 2;
     enable();
     displayElevatorSetpoint();
   }
@@ -59,10 +65,10 @@ public class Elevator extends PIDSubsystem {
   }
 
   public void moveElevatorUp(){
-    if(ElevatorPosition < 3) {
+    if(ElevatorPosition < 2) {
       ElevatorPosition++;
-      if(ElevatorPosition >= 3){
-        ElevatorPosition = 3;
+      if(ElevatorPosition >= 2){
+        ElevatorPosition = 2;
       }
     }
     displayElevatorSetpoint();
@@ -75,15 +81,19 @@ public class Elevator extends PIDSubsystem {
     else{
         ElevatorPosition = 0;
     }
+
+    if(ElevatorPosition == 0 && Robot.claw.currentGamePiece == GamePiece.Hatch) {
+      ElevatorPosition = 1;
+    }
     displayElevatorSetpoint();
   }
 
   public String getSetpointDescr(int Setpoint){
     switch(Setpoint){
       case 1:
-        return "Bottom (1)";        
+        return "Driving (1)";        
       case 2: 
-        return "Middle (2)";
+        return "Scoring (2)";
       case 3:
         return "Top (3)";
       default:

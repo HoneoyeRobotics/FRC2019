@@ -69,6 +69,10 @@ public class DriveTrain extends Subsystem {
 	public void arcadeDrive(double xSpeed,double zRotation) {				
 		drivetrain.arcadeDrive( xSpeed, zRotation);
   }	
+
+  public void tankDrive(double leftSpeed, double rightSpeed){
+    drivetrain.tankDrive(leftSpeed, rightSpeed);
+  }
   
   // public int getDistanceCM(){
   //   return distanceSensor.getDistance();

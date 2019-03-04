@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
+import frc.robot.lib.GamePiece;
 
 public class AdjustElevator extends Command {
 
@@ -31,6 +32,7 @@ public class AdjustElevator extends Command {
   @Override
   protected void execute() {
     double POV = Robot.oi.secondaryJoystick.getPOV();
+   // double origSetpoint = Robot.elevator.getSetpoint();
     SmartDashboard.putNumber("POV",POV);
     if(POV == LastPOV)
       return;
@@ -40,6 +42,8 @@ public class AdjustElevator extends Command {
     } else if (POV == 180){
       Robot.elevator.moveElevatorDown();
     }
+  
+    Robot.elevator.runToSetpoint();
   }
 
   // Make this return true when this Command no longer needs to run execute()

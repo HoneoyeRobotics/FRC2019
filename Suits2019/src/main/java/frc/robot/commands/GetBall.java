@@ -18,7 +18,10 @@ public class GetBall extends CommandGroup {
     requires(Robot.claw);
     requires(Robot.arms);
 
+    addSequential(new CloseClaw());
+    addSequential(new MoveElevatorToFloor());
     addSequential(new ArmsFullOut());
+    addSequential(new OpenClaw());
     addSequential(new RunClawWheelsIn());
     // Add Commands here:
     // e.g. addSequential(new Command1());
