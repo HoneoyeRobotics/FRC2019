@@ -22,13 +22,12 @@ import frc.robot.lib.GamePiece;
  * Add your docs here.
  */
 public class Elevator extends PIDSubsystem {
-  public boolean IsEnabled =  false;
 
   private Encoder elevatorEncoder;
   private WPI_TalonSRX elevatorMotor;
   private int ElevatorPosition = 0;
   private int CurrentElevatorPosition = 0;
-
+  private double encoderValue;
 
   public Elevator() {
     // Intert a subsystem name and PID values here
@@ -65,6 +64,7 @@ public class Elevator extends PIDSubsystem {
   }
 
   public void moveElevatorUp(){
+    //move it up from a range of 0 <> 2
     if(ElevatorPosition < 2) {
       ElevatorPosition++;
       if(ElevatorPosition >= 2){
@@ -75,39 +75,23 @@ public class Elevator extends PIDSubsystem {
   }
 
   public void moveElevatorDown() {
+    //move it down from a range of 0 <> 2
     if(ElevatorPosition > 0){
       ElevatorPosition--;
     }
     else{
         ElevatorPosition = 0;
     }
-
+    //if we have a hatch, make sure you are at setpoint 1 and not 0 so it does not drag on the floor.
     if(ElevatorPosition == 0 && Robot.claw.currentGamePiece == GamePiece.Hatch) {
       ElevatorPosition = 1;
     }
     displayElevatorSetpoint();
   }
 
-  public String getSetpointDescr(int Setpoint){
-    switch(Setpoint){
-      case 1:
-        return "Driving (1)";        
-      case 2: 
-        return "Scoring (2)";
-      case 3:
-        return "Top (3)";
-      default:
-        return "Floor (0)";
-    }
-  }
-  public void displayElevatorSetpoint(){
-      SmartDashboard.putString("Ele. Current Setpoint", getSetpointDescr(CurrentElevatorPosition));
-      SmartDashboard.putString("Ele. Requested Setpoint", getSetpointDescr(ElevatorPosition));
-  }
-
-  public void runToSetpoint(){
-    //if claw = out then we have a hatch
+  public void runToSetpoint(){    
     int setpoint = 0;
+    //if claw = out then we have a hatch
     if(Robot.claw.currentGamePiece == GamePiece.Hatch){
         setpoint = RobotMap.hatchEncoderPositions[ElevatorPosition];
     } else {
@@ -117,6 +101,10 @@ public class Elevator extends PIDSubsystem {
     CurrentElevatorPosition = ElevatorPosition;
     enable();
     displayElevatorSetpoint();
+  }
+
+  public boolean atFloor(){
+      return CurrentElevatorPosition == 0  && returnPIDInput() < 10;
   }
 
   @Override
@@ -130,22 +118,12 @@ public class Elevator extends PIDSubsystem {
     // Return your input value for the PID loop
     // e.g. a sensor, like a potentiometer:
     // yourPot.getAverageVoltage() / kYourMaxVoltage;
-    double encValue = elevatorEncoder.get();
+    encoderValue = elevatorEncoder.get();
    // double encDistance = elevatorEncoder.getDistance();
-    SmartDashboard.putNumber("Tower Encoder Value", encValue);
+    SmartDashboard.putNumber("Tower Encoder Value", encoderValue);
     //SmartDashboard.putNumber("Tower Encoder Dist.", encDistance);
-    return encValue;
+    return encoderValue;
   }
-
-public void setDisabled(){
-  disable();
-  IsEnabled = false;
-}
-
-public void setEnabled(){
-  enable();
-  IsEnabled = true;
-}
 
   public void initialize(){
     setSetpoint(0);
@@ -154,13 +132,28 @@ public void setEnabled(){
 
   @Override
   protected void usePIDOutput(double output) {
-    // Use output to drive your system, like a motor
-    // e.g. yourMotor.set(output);
-
-    if(CurrentElevatorPosition == 0  && returnPIDInput() < 10){
+    //if the elevator is close to the floor, set output to 0 to prevent the motor from running down if it gets stuck
+    if(atFloor()) {
         output = 0;
     }
     elevatorMotor.set(output);
+    //display output to check on motor power
     SmartDashboard.putNumber("tower pid output", output);
+  }
+ 
+  public String getSetpointDescr(int Setpoint){
+    switch(Setpoint){
+      case 1:
+        return "Driving (1)";        
+      case 2: 
+        return "Scoring (2)";
+      default:
+        return "Floor (0)";
+    }
+  }
+  
+  public void displayElevatorSetpoint(){
+      SmartDashboard.putString("Ele. Current Setpoint", getSetpointDescr(CurrentElevatorPosition));
+      SmartDashboard.putString("Ele. Requested Setpoint", getSetpointDescr(ElevatorPosition));
   }
 }
