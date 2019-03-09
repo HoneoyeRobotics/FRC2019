@@ -7,20 +7,27 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
 
-public class GetHatch extends CommandGroup {
+/**
+ * Add your docs here.
+ */
+public class MoveElevatorToDrive extends InstantCommand {
   /**
    * Add your docs here.
    */
-  public GetHatch() {
-    
-    requires(Robot.claw);
-    requires(Robot.arms);
+  public MoveElevatorToDrive() {
+    super();
     requires(Robot.elevator);
-
-    addSequential(new MoveElevatorToGetHatch());
-    addSequential(new ArmsFullIn());
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
   }
+
+  // Called once when the command executes
+  @Override
+  protected void initialize() {
+    Robot.elevator.goToDrive();
+  }
+
 }

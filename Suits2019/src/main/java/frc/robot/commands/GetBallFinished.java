@@ -10,17 +10,16 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
 
-public class GetHatch extends CommandGroup {
+public class GetBallFinished extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public GetHatch() {
-    
+  public GetBallFinished() {
     requires(Robot.claw);
     requires(Robot.arms);
     requires(Robot.elevator);
-
-    addSequential(new MoveElevatorToGetHatch());
-    addSequential(new ArmsFullIn());
+    
+   addSequential(new CloseClaw());
+   addSequential(new MoveElevatorToDrive());
   }
 }

@@ -44,6 +44,14 @@ public class Elevator extends PIDSubsystem {
     elevatorEncoder.setDistancePerPulse(498/360);
     setSetpoint(0);
   }
+
+  public void goToDrive(){
+    setSetpoint(RobotMap.hatchEncoderPositions[1]);
+    CurrentElevatorPosition = 1;
+    ElevatorPosition = 1;
+    enable();
+    displayElevatorSetpoint();
+  }
   public void goToFloor(){
     setSetpoint(RobotMap.hatchEncoderPositions[0]);
     CurrentElevatorPosition = 0;

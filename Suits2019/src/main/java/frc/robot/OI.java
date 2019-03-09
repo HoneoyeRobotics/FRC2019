@@ -60,7 +60,7 @@ public class OI {
     //driverButtonY.whileHeld(new DriveToCenter());
 
     secondaryButtonB.whileHeld(new GetBall());
-    secondaryButtonB.whenReleased(new CloseClaw());
+    secondaryButtonB.whenReleased(new GetBallFinished());
 
     secondaryButtonLB.whenPressed(new ArmsFullIn());
     secondaryButtonRB.whenPressed(new ArmsFullOut());
