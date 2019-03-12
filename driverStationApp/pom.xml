@@ -35,28 +35,28 @@
         <artifactId>opencv</artifactId>
         <version>3.4.4</version>
         <scope>system</scope>
-        <systemPath>${project.basedir}\lib\opencv-344.jar</systemPath>
+        <systemPath>C:\SuitsGIT\FRC2019\driverStationApp\lib\opencv-344.jar</systemPath>
     </dependency>
     <dependency>
         <groupId>ntcore-java</groupId>
         <artifactId>ntcore</artifactId>
         <version>2019.1.1</version>
         <scope>system</scope>
-        <systemPath>${project.basedir}\lib\ntcore-java-2019.1.1.jar</systemPath>
+        <systemPath>C:\SuitsGIT\FRC2019\driverStationApp\lib\ntcore-java-2019.1.1.jar</systemPath>
     </dependency>    
         <dependency>
         <groupId>ntcore-jni</groupId>
         <artifactId>ntcore-jni</artifactId>
         <version>2019.1.1</version>
         <scope>system</scope>
-        <systemPath>${project.basedir}\lib\ntcore-jni-2019.1.1-windowsx86-64.jar</systemPath>
+        <systemPath>C:\SuitsGIT\FRC2019\driverStationApp\lib\ntcore-jni-2019.1.1-windowsx86-64.jar</systemPath>
     </dependency> 
     <dependency>
         <groupId>wpiutil-java</groupId>
         <artifactId>wpiutil</artifactId>
         <version>2019.1.1</version>
         <scope>system</scope>
-        <systemPath>${project.basedir}\lib\wpiutil-java-2019.1.1.jar</systemPath>
+        <systemPath>C:\SuitsGIT\FRC2019\driverStationApp\lib\wpiutil-java-2019.1.1.jar</systemPath>
     </dependency>
   </dependencies>
   <build>
@@ -68,6 +68,29 @@
           <version>3.1.0</version>
         </plugin>
         <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
+
+        <plugin>
+  <artifactId>maven-assembly-plugin</artifactId>
+  <configuration>
+    <archive>
+      <manifest>
+        <mainClass>it.bitrack.main.Main</mainClass>
+      </manifest>
+    </archive>
+    <descriptorRefs>
+      <descriptorRef>jar-with-dependencies</descriptorRef>
+    </descriptorRefs>
+  </configuration>
+  <executions>
+    <execution>
+      <id>make-assembly</id> <!-- this is used for inheritance merges -->
+      <phase>package</phase> <!-- bind to the packaging phase -->
+      <goals>
+        <goal>single</goal>
+      </goals>
+    </execution>
+  </executions>
+</plugin>
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>
           <version>3.0.2</version>
@@ -83,6 +106,13 @@
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.0.2</version>
+          <configuration>
+					<archive>
+						<manifest>
+							<mainClass>com.suits3951.driverStationApp.App</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
         </plugin>
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
@@ -97,7 +127,13 @@
           <artifactId>maven-site-plugin</artifactId>
           <version>3.7.1</version>
         </plugin>
-      
+      <plugin>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.6.0</version>
+            <configuration>
+                <mainClass>com.suits3951.driverStationApp.App</mainClass>
+            </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>

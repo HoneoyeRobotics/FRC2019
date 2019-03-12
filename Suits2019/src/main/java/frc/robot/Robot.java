@@ -12,9 +12,11 @@ import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
 import edu.wpi.cscore.*;
+import edu.wpi.cscore.VideoMode.PixelFormat;
 import edu.wpi.first.cameraserver.*;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
@@ -35,6 +37,8 @@ public class Robot extends TimedRobot {
   public static Elevator elevator;
   public static Arms arms;// = new Arms();
 
+  public static NetworkTable visionTable;
+  public static UsbCamera usbCamera;
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -51,7 +55,13 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData(Robot.claw);
     SmartDashboard.putData(Robot.elevator);
     SmartDashboard.putData(Robot.arms);
+    SmartDashboard.putData("Reset Arm Encoder", new ResetArmEncoder());
     
+    usbCamera = CameraServer.getInstance().startAutomaticCapture();
+    //usbCamera.setResolution(320,240);
+    usbCamera.setVideoMode(PixelFormat.kMJPEG, 320, 240, 15);
+
+    visionTable = NetworkTable.getTable("VisionTable");
     SmartDashboard.putData("Open Claw", new OpenClaw());    
     SmartDashboard.putData("Close Claw", new CloseClaw());
    // cameraInit();
@@ -107,6 +117,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     
+    SmartDashboard.putNumber("Arm Pos", Robot.arms.getArmPosition());
   }
 
 
@@ -131,7 +142,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    //Robot.elevator.initialize();
+    Robot.elevator.initialize();
+    Robot.arms.resetArmPositionEncoder();
+    TeleopInitCommand teleopInitCommand = new TeleopInitCommand();
+    teleopInitCommand.start();
   }
 
   /**

@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import  frc.robot.lib.*;
 import frc.robot.commands.*;
@@ -53,6 +54,8 @@ public class Claw extends Subsystem {
     clawInOutState = ClawInOutState.IN;
     clawInOutSolenoid.set(DoubleSolenoid.Value.kReverse);
     currentGamePiece = GamePiece.Hatch;
+    
+     Robot.visionTable.putBoolean("hatch", true);
     displayGamePiece();
   }
 
@@ -65,6 +68,7 @@ public class Claw extends Subsystem {
       return;
     }
     clawInOutState = ClawInOutState.OUT;
+    Robot.visionTable.putBoolean("hatch", false);
     clawInOutSolenoid.set(DoubleSolenoid.Value.kForward);
     currentGamePiece = GamePiece.Ball;
     displayGamePiece();

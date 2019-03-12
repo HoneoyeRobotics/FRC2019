@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 public class ArmsInOut extends Command {
   public ArmsInOut() {
@@ -29,6 +30,12 @@ public class ArmsInOut extends Command {
   protected void execute() {
     double motorSpeed = Robot.oi.secondaryJoystick.getRawAxis(Robot.oi.secondaryRTAxis);
     motorSpeed = motorSpeed - Robot.oi.secondaryJoystick.getRawAxis(Robot.oi.secondaryLTAxis);
+    int armPos = Robot.arms.getArmPosition();
+    if((motorSpeed < 0 && armPos <= RobotMap.armFwdRevEncoderMin) || (motorSpeed > 0 && armPos > RobotMap.armFwdRevEncoderMax)){
+      if(Robot.oi.secondaryButtonStart.get() == false){
+        motorSpeed = 0;
+      }
+    }
     Robot.arms.moveArms(motorSpeed);
   }
 

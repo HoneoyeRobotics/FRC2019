@@ -14,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.ArcadeDriveWithJoystick;
 import frc.robot.lib.*;
@@ -32,7 +33,6 @@ public class DriveTrain extends Subsystem {
   public double pixelsOff = 9999;
   public double distance = 9999;
 
-  private NetworkTable visionTable;
   //public LIDARLite distanceSensor;
   
 
@@ -53,13 +53,14 @@ public class DriveTrain extends Subsystem {
     // distanceSensor = new LIDARLite (I2C.Port.kOnboard);
     // distanceSensor.startMeasuring();
 
-    visionTable = NetworkTable.getTable("VisionTable");
   }
 
   public void getVisionData(){
-    inRange =  visionTable.getBoolean("inRange", false);
-    distance = visionTable.getNumber("distance", 9999);
-    pixelsOff = visionTable.getNumber("pixelsOff", 9999);
+    
+    distance = Robot.visionTable.getNumber("distance", 9999);
+    pixelsOff = Robot.visionTable.getNumber("pixelsOff", 9999);
+    inRange = (pixelsOff < 0 ? pixelsOff * -1 : pixelsOff) <= RobotMap.visionDistanceOffPixelsOK;
+
     SmartDashboard.putBoolean("In Range?", inRange);
     SmartDashboard.putNumber("Pixels from Center", pixelsOff);
     SmartDashboard.putNumber("Distance from Target", distance);
@@ -68,6 +69,10 @@ public class DriveTrain extends Subsystem {
 	public void arcadeDrive(double xSpeed,double zRotation) {				
 		drivetrain.arcadeDrive( xSpeed, zRotation);
   }	
+
+  public void tankDrive(double leftSpeed, double rightSpeed){
+    drivetrain.tankDrive(leftSpeed, rightSpeed);
+  }
   
   // public int getDistanceCM(){
   //   return distanceSensor.getDistance();

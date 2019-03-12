@@ -38,7 +38,9 @@ public class Arms extends Subsystem {
   }
 
   public int getArmPosition(){
-    return armFwdRevMotor.getSelectedSensorPosition();
+    int armPosition = armFwdRevMotor.getSelectedSensorPosition();
+     
+    return armPosition;
     //return armFwdRevEncoder.get();
   }
 

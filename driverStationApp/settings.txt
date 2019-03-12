@@ -1,0 +1,8 @@
+hatchMinY=175
+hatchMaxY=185
+ballMinY=80
+ballMaxY=125
+pixelsCloseEnough=10
+targetWidth=2
+cameraFieldOfView=48.6
+threadSleepTime=200
