@@ -91,14 +91,13 @@ public class VisionImageProcessor  {
     int threadSleepTime = 50;
 
     public VisionImageProcessor() {
-        //  videoCap = new VideoCapture("http://10.39.51.11/mjpg/video.mjpg");
-        //  boolean opened = videoCap.open("http://10.39.51.11/mjpg/video.mjpg");
+        videoCap = new VideoCapture("http://10.39.51.11/mjpg/video.mjpg");
+        boolean opened = videoCap.open("http://10.39.51.11/mjpg/video.mjpg");
 
-        //  return;
-        videoCap = new VideoCapture(0);
-        videoCap.set(Videoio.CV_CAP_PROP_FRAME_WIDTH, 320);
-        videoCap.set(Videoio.CV_CAP_PROP_FRAME_HEIGHT, 240);
-        videoCap.open(0);        
+//        videoCap = new VideoCapture(0);
+        //videoCap.set(Videoio.CV_CAP_PROP_FRAME_WIDTH, 320);
+        //videoCap.set(Videoio.CV_CAP_PROP_FRAME_HEIGHT, 240);
+        //videoCap.open(0);        
        
         
         ntInstance = NetworkTableInstance.getDefault();
