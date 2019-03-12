@@ -1,22 +1,40 @@
 package com.suits3951.driverStationApp;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import com.suits3951.driverStationApp.GripPipeline.Line;
 
 import org.opencv.core.*;
+import org.opencv.highgui.HighGui;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.videoio.VideoCapture;
+import org.opencv.videoio.Videoio;
+
+import java.awt.image.DataBufferByte;
+import java.awt.image.WritableRaster;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -26,67 +44,23 @@ import javax.swing.JTextArea;
 
 // import edu.wpi.cscore.UsbCamera;
 
-public class MyFrame extends JFrame {
+public class VisionImageProcessor  {
+    String settingsFileName = "c:\\suitsgit\\frc2019\\driverStationApp\\settings.txt";
     private JPanel contentPanel;
     private JTextArea infoTextArea;
     private int cameraWidth = 320;
     private int cameraHeight = 240;
-    public MyFrame() {
-     
-        
-        infoTextArea = new JTextArea();
-        infoTextArea.setText("what is the up.");
-        //infoTextArea.setBackground(new Color(241,241,241));
-        //infoTextArea.setEditable(false);
-        infoTextArea.setMargin(new Insets(5, 5, 5,5));
-        //infoTextArea.setBounds(5,5, 300,75);
-        infoTextArea.setVisible(true);
-        
-        JPanel infoPanel = new JPanel(new BorderLayout());
-        infoPanel.add(infoTextArea, BorderLayout.CENTER);
-        infoPanel.setVisible(true);
-
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(0, 0, 1280, 720);
-
-        
-        contentPanel = new JPanel(new BorderLayout());
-        contentPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
-        
 
 
-        JPanel mainPanel = new JPanel(new BorderLayout());
-        //mainPanel.add(new JTextArea("what is the up"));
-        //mainPanel.add(infoTextArea);        
-        mainPanel.add(contentPanel);
-        this.setTitle("SUITS 3951 Driver Station GRIP Parser");
-        this.setLayout(new BorderLayout());        
-        this.add(mainPanel, BorderLayout.CENTER);
-        this.setSize(new Dimension(800, 650));
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocationRelativeTo(null);
-        this.setResizable(false);
-        this.setVisible(true);        
-
-        
-        ntInstance = NetworkTableInstance.getDefault();
-        nTable = ntInstance.getTable("VisionTable");
-        ntInstance.startClientTeam(3951);  // where TEAM=190, 294, etc, or use inst.startClient("hostname") or similar
-        ntInstance.startDSClient();  // recommended if running on DS computer; this gets the robot IP from the DS
-        //nteInRange = nTable.getEntry("inRange");
-        nteDistance = nTable.getEntry("distance");
-        ntePixelsOff = nTable.getEntry("pixelsOff");
-        nteHatch = nTable.getEntry("hatch");
-       new MyThread().start();
-    }
+    private VideoCapture videoCap;
     private NetworkTableInstance ntInstance;
     private NetworkTable nTable;
-    //private NetworkTableEntry nteInRange;
     private NetworkTableEntry nteDistance;
     private NetworkTableEntry ntePixelsOff;
-    private NetworkTableEntry nteHatch;
+    private NetworkTableEntry nteHatch;    
+    //Mat2Image mat2Img = new Mat2Image();
+    public Mat lastMat;
 
-    private VideoCap videoCap = new VideoCap();
 
     GripPipeline pipeline = new GripPipeline();
 
@@ -94,26 +68,144 @@ public class MyFrame extends JFrame {
     Point rightPoint1 = new Point(0,0);    
     Point topPoint2 = new Point(cameraWidth,cameraHeight);
     Point rightPoint2 = new Point(0,0);
+    
     double center = 0;
     double length = 0;
     double lastCenter = 0;
     boolean closeEnough = false;
     double distanceFromCenter = 0;
     boolean hatch = false;
+
+    JPanel mainPanel;
+    ProcessingThread currentThread;
+
+
+
     double hatchMinY = 175;
     double hatchMaxY = 185;
     double ballMinY = 80;
     double ballMaxY = 125;
+    double pixelsCloseEnough = 10;
+    double targetWidth = 2; // width of tape
+    double cameraFieldOfView = 48.6;
+    int threadSleepTime = 50;
 
-    public void paint(Graphics g){
-        hatch = nteHatch.getBoolean(false);
-        g = contentPanel.getGraphics();
-        BufferedImage image = videoCap.getOneFrame();
-        Mat mat = videoCap.lastMat; //videoCap.getLastMat();
+    public VisionImageProcessor() {
+        //  videoCap = new VideoCapture("http://10.39.51.11/mjpg/video.mjpg");
+        //  boolean opened = videoCap.open("http://10.39.51.11/mjpg/video.mjpg");
 
+        //  return;
+        videoCap = new VideoCapture(0);
+        videoCap.set(Videoio.CV_CAP_PROP_FRAME_WIDTH, 320);
+        videoCap.set(Videoio.CV_CAP_PROP_FRAME_HEIGHT, 240);
+        videoCap.open(0);        
+       
+        
+        ntInstance = NetworkTableInstance.getDefault();
+        nTable = ntInstance.getTable("VisionTable");
+        //ntInstance.startClientTeam(3951);  // where TEAM=190, 294, etc, or use inst.startClient("hostname") or similar
+        //ntInstance.startDSClient();  // recommended if running on DS computer; this gets the robot IP from the DS
+        //nteInRange = nTable.getEntry("inRange");
+        nteDistance = nTable.getEntry("distance");
+        ntePixelsOff = nTable.getEntry("pixelsOff");
+        nteHatch = nTable.getEntry("hatch");
+    }
+
+    public void loadSettingsFromFile(){
+        File f = new File(settingsFileName);
+        if (f.exists()){
+           System.out.print("Loading settings from file " + settingsFileName + "\n");
+            try {
+                InputStream is = new FileInputStream(settingsFileName);
+                BufferedReader br = new BufferedReader( new InputStreamReader(is));                
+                String line;
+                while(( line = br.readLine()) != null ) {
+                    String[] parts = line.split("=");
+                    switch(parts[0])                {
+                        case "hatchMinY":
+                            hatchMinY = Double.parseDouble(parts[1]);
+                            break;  
+                        case "hatchMaxY":
+                            hatchMaxY = Double.parseDouble(parts[1]);
+                            break;  
+                        case "ballMinY":
+                            ballMinY = Double.parseDouble(parts[1]);
+                            break;  
+                        case "ballMaxY":
+                            ballMaxY = Double.parseDouble(parts[1]);
+                            break;  
+                        case "pixelsCloseEnough":
+                            pixelsCloseEnough = Double.parseDouble(parts[1]);
+                            break;  
+                        case "targetWidth":
+                            targetWidth = Double.parseDouble(parts[1]);
+                            break;  
+                        case "cameraFieldOfView":
+                            cameraFieldOfView = Double.parseDouble(parts[1]);
+                            break;  
+                        case "threadSleepTime":
+                            threadSleepTime = Integer.parseInt(parts[1]);
+                            break;
+                    }
+                }
+            }
+            catch(Exception ex){
+
+            }
+        }
+    }
+
+
+    public void start(){
+        loadSettingsFromFile();
+        currentThread =  new ProcessingThread();
+        currentThread.start();
+    }
+
+    BufferedImage getOneFrame() {        
+        videoCap.read(lastMat);
+        BufferedImage image = MatToImage(lastMat);
+        return image;
+    }
+
+    BufferedImage MatToImage(Mat mat){
+
+        int type = 0;
+        switch (mat.channels()) {
+            case 1:
+                type = BufferedImage.TYPE_BYTE_GRAY;
+                break;
+            case 3:
+            type = BufferedImage.TYPE_3BYTE_BGR;
+                break;
+        } 
+        
+        int matCols = mat.cols();
+        int matRows = mat.rows();
+        BufferedImage img = null;
+        try {
+            img = new BufferedImage(matCols, matRows, type);
+            
+            if(img != null) {        
+                WritableRaster raster = img.getRaster();
+                DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();
+                byte[] data = dataBuffer.getData();
+                mat.get(0, 0, data);
+            }
+        }
+        catch(Exception ex) {
+
+        }
+        return img;
+    }
+
+    public void ProcessOneImage(){
+        //if(1==1){return;}
+        hatch = nteHatch.getBoolean(false);        
+        BufferedImage image = getOneFrame();
+        Mat mat = lastMat;
         pipeline.process(mat);
-        //ArrayList<GripPipeline.Line> lines = pipeline.findLinesOutput();
-
+        
         int point = 1;
 
         ArrayList<MatOfPoint> contours = pipeline.findContoursOutput();
@@ -168,13 +260,7 @@ public class MyFrame extends JFrame {
         }
   
         if(points.size() < 2){
-            // if((topPoint1.x == cameraWidth && topPoint1.y == cameraHeight) || (topPoint2.x == cameraWidth && topPoint2.y == cameraHeight)){
-            //     System.out.print("Not found!");
-            //     //g.drawImage(image, 50, 100, this);
-            //     return;
-            // }
-            System.out.print("Only found " + points.size() + " points.\n");
-            g.drawImage(image, 50, 100, this);
+            System.out.print("Only found " + points.size() + " points.\n");            
             return;
         } else if(points.size() == 2){
             //2 points
@@ -233,71 +319,49 @@ public class MyFrame extends JFrame {
         Line tapeTop = new Line(topPoint1.x, topPoint1.y, rightPoint1.x, rightPoint1.y);
         //formula found from https://wpilib.screenstepslive.com/s/currentCS/m/vision/l/288985-identifying-and-processing-the-targets
         double width = tapeTop.length();
-        double tapeWidthIn = 2.0;
-        double tapeWidthFt = tapeWidthIn / 12;
-        double fovPixels = cameraWidth;
-        double cameraViewAngle = 41.7; //this in their example what worked.
+        //double tapeWidthIn = 2.0;
+        //double tapeWidthFt = tapeWidthIn / 12;
+        //double fovPixels = cameraWidth;
+        //double cameraViewAngle = 41.7; //this in their example what worked.
         //double cameraViewAngle = 54; //this is set my the camera
-        double  bottomMath = fovPixels /(2 * width * Math.tan(cameraViewAngle));
-        double distance = tapeWidthFt * bottomMath;
+        //double  bottomMath = fovPixels /(2 * width * Math.tan(cameraViewAngle));
+        //double distance = tapeWidthFt * bottomMath;
         
-        double targetWidth = 2; // width of tape
         double targetPixelWidth = width;
         //double cameraFieldOfView = 47.5;
-        double cameraFieldOfView = 48.6;
-        distance = (((targetWidth*cameraWidth)/targetPixelWidth)/2)/Math.tan(((cameraFieldOfView*3.14159)/180.0)/2.0);
-
-
-    //distance in feet!
-    //SetVariable "/SmartDashboard/Frisbee_Distance", CInt((distance*100)/12)/100
-
-
-
+        double distance = (((targetWidth*cameraWidth)/targetPixelWidth)/2)/Math.tan(((cameraFieldOfView*3.14159)/180.0)/2.0);
         distanceFromCenter =  center - (cameraWidth /  2);
 
         if(distanceFromCenter < 0){
-            closeEnough = (distanceFromCenter > -10);
+            closeEnough = (distanceFromCenter > (-1 * pixelsCloseEnough));
         }
         else{
-            closeEnough = (distanceFromCenter < 10);
+            closeEnough = (distanceFromCenter < pixelsCloseEnough);
         }
 
 
         if(lastCenter != center){
             lastCenter = center;
 
-            System.out.print("Points are now " + topPoint1.x + "," + topPoint1.y + " and " + topPoint2.x + "," + topPoint2.y + 
+            String Output = "Points are now " + topPoint1.x + "," + topPoint1.y + " and " + topPoint2.x + "," + topPoint2.y + 
             "; Center: " + center + "; length: " + length + "; DFC: " + distanceFromCenter +  
-            "; close? " + closeEnough + ";  Distance: " +  distance + "; Tape width: "  + width + "\n");
-
+            "; close? " + closeEnough + ";  Distance: " +  distance + "; Tape width: "  + width;
+            System.out.print(Output + "\n");
             nteDistance.setDouble(distance);
            // nteInRange.setBoolean(closeEnough);
             ntePixelsOff.setDouble(distanceFromCenter);                                    
-        }
-        // if(lines.size() != numlines){
-        //     System.out.print("Num Lines now " + lines.size() + "\n");
-        //     int num = 0;
-        // //   for (GripPipeline.Line line : lines) {
-        // //       num++;
-        // //     System.out.print("      line " + num + " x1:"+line.x1 + ", y1:"+line.y1 + ", x2:"+line.x2+ ", y2:"+line.y2 + ", len: " + line.length() + ", ang: " + line.angle() + "\n");
-        // //   }          
-        //     numlines = lines.size();            
-        //     nteNumLines.setNumber(numlines);        
-
-        // }        
-            
-        g.drawImage(image, 50, 100, this);
+        }  
+                    
     }
 
-    class MyThread extends Thread{
+    class ProcessingThread extends Thread{
         @Override
         public void run() {
             for (;;){
-                repaint();
+                ProcessOneImage();
                 try {                     
-                    Thread.sleep(50);                                
+                    Thread.sleep(threadSleepTime);                                
                     System.gc(); 
-
                 } catch (InterruptedException e) {    }
             }
         }

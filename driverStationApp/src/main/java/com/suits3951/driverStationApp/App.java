@@ -21,8 +21,8 @@ public class App {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    MyFrame frame = new MyFrame();
-                    frame.setVisible(true);
+                    VisionImageProcessor imageProcessor = new VisionImageProcessor();
+                    imageProcessor.start();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

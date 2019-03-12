@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Preferences;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -44,18 +46,42 @@ public class RobotMap {
     public static final double slowSpeedModifier = 0.75;
 
 
-    public static final int[] ballEncoderPositions = { 0, 200, 590, 590 };
-    public static final int[] hatchEncoderPositions = { 0, 200, 400, 400 };
-    public static final int armFwdRevEncoderMin = 1000;
-    public static final int armFwdRevEncoderMax = 1110000;
-    public static final int armFwdRevEncoderHatchMax = 600000;
-    public static final double armFwdRevAutoSpeed = 1;
+    public static int[] ballEncoderPositions = { 0, 200, 590, 590 };
+    public static int[] hatchEncoderPositions = { 0, 200, 400, 400 };
+    public static int armFwdRevEncoderMin = 1000;
+    public static int armFwdRevEncoderMax = 1110000;
+    public static int armFwdRevEncoderHatchMax = 600000;
+    public static double armFwdRevAutoSpeed = 1;
 
-    public static final double visionCenterDeadband = 5;
-    public static final double visionDistanceBall = 8.5;
-    public static final double visionDistanceHatch = 3;
-    public static final double visionDistanceFromCamToBumper = 40;
-    public static final double visionFwdSpeed = 0.75;
-    public static final double visionRotateSpeed = 0.75;
-    public static final double visionDistanceOffPixelsOK = 15;
+    public static double visionCenterDeadband = 5;
+    public static double visionDistanceBall = 8.5;
+    public static double visionDistanceHatch = 3;
+    public static double visionDistanceFromCamToBumper = 40;
+    public static double visionFwdSpeed = 0.75;
+    public static double visionRotateSpeed = 0.75;
+    public static double visionDistanceOffPixelsOK = 15;
+
+    public static  void loadFromPreferences(){
+        //load these settings from the driver station...
+        Preferences prefs = Preferences.getInstance();
+
+        armFwdRevEncoderMin = prefs.getInt("armFwdRevEncoderMin", 1000);
+        armFwdRevEncoderMax = prefs.getInt("armFwdRevEncoderMax", 1110000);
+        armFwdRevEncoderHatchMax = prefs.getInt("armFwdRevEncoderHatchMax", 600000);
+        armFwdRevAutoSpeed = prefs.getDouble("armFwdRevAutoSpeed", 1);
+
+        visionCenterDeadband = prefs.getDouble("visionCenterDeadband", 5);
+        visionDistanceBall = prefs.getDouble("visionDistanceBall", 8.5);
+        visionDistanceHatch = prefs.getDouble("visionDistanceHatch", 3);
+        visionDistanceFromCamToBumper = prefs.getDouble("visionDistanceFromCamToBumper", 40);
+        visionFwdSpeed = prefs.getDouble("visionFwdSpeed", 0.75);
+        visionRotateSpeed = prefs.getDouble("visionRotateSpeed", 10.75);
+        visionDistanceOffPixelsOK = prefs.getDouble("visionDistanceOffPixelsOK", 15);
+
+        ballEncoderPositions[1] = prefs.getInt("ballEncoderPosition1", 200);
+        ballEncoderPositions[2] = prefs.getInt("ballEncoderPosition2", 590);
+
+        hatchEncoderPositions[1] = prefs.getInt("hatchEncoderPosition1", 200);
+        hatchEncoderPositions[2] = prefs.getInt("hatchEncoderPosition2", 400);
+    }
 }
