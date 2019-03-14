@@ -117,7 +117,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     
-    SmartDashboard.putNumber("Arm Pos", Robot.arms.getArmPosition());
+    //SmartDashboard.putNumber("Arm Pos", Robot.arms.getArmPosition());
   }
 
 
@@ -133,6 +133,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    Robot.elevator.initialize();
+    Robot.arms.resetArmPositionEncoder();
+    TeleopInitCommand teleopInitCommand = new TeleopInitCommand();
+    teleopInitCommand.start();
   }
 
   @Override
@@ -142,10 +146,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    Robot.elevator.initialize();
-    Robot.arms.resetArmPositionEncoder();
-    TeleopInitCommand teleopInitCommand = new TeleopInitCommand();
-    teleopInitCommand.start();
+    
   }
 
   /**

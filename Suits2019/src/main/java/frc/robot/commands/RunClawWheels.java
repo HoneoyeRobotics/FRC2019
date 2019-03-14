@@ -28,7 +28,7 @@ public class RunClawWheels extends Command {
   @Override
   protected void execute() {
     double axisValue = Robot.oi.secondaryJoystick.getRawAxis(Robot.oi.secondaryLStickYAxis);
-    if(axisValue < 0.1 && axisValue > -0.1){
+    if(axisValue < 0.2 && axisValue > -0.2){
       axisValue = 0;
     }
     Robot.claw.runArmWheels(axisValue);

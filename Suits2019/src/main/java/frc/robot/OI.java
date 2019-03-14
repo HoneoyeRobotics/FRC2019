@@ -34,7 +34,8 @@ public class OI {
   // public JoystickButton driverButtonB  = new JoystickButton(driverJoystick, 2); // drive slow button
   // public JoystickButton driverButtonX = new JoystickButton(driverJoystick, 3);   
   // public JoystickButton driverButtonY = new JoystickButton(driverJoystick, 4); // drive to center
-
+  public JoystickButton leftStickButton2 = new JoystickButton(leftTankStick, 2);   
+  public JoystickButton rightStickButton2 = new JoystickButton(rightTankStick, 2);
 
 
   public JoystickButton secondaryButtonA = new JoystickButton(secondaryJoystick, 1);  
@@ -58,6 +59,7 @@ public class OI {
   public OI() {    
 
     //driverButtonY.whileHeld(new DriveToCenter());
+    leftStickButton2.whileHeld(new DriveToCenter());
 
     secondaryButtonB.whileHeld(new GetBall());
     secondaryButtonB.whenReleased(new GetBallFinished());

@@ -55,7 +55,7 @@ public class Claw extends Subsystem {
     clawInOutSolenoid.set(DoubleSolenoid.Value.kReverse);
     currentGamePiece = GamePiece.Hatch;
     
-     Robot.visionTable.putBoolean("hatch", true);
+     //Robot.visionTable.putBoolean("hatch", true);
     displayGamePiece();
   }
 
@@ -68,7 +68,7 @@ public class Claw extends Subsystem {
       return;
     }
     clawInOutState = ClawInOutState.OUT;
-    Robot.visionTable.putBoolean("hatch", false);
+    //Robot.visionTable.putBoolean("hatch", false);
     clawInOutSolenoid.set(DoubleSolenoid.Value.kForward);
     currentGamePiece = GamePiece.Ball;
     displayGamePiece();

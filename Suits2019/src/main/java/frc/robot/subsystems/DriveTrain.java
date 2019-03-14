@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -26,13 +27,14 @@ public class DriveTrain extends Subsystem {
 	private WPI_VictorSPX rearLeftDriveMotor;
 	private SpeedControllerGroup leftDriveMotorGroup;	
 	private WPI_VictorSPX frontRightDriveMotor;
-	private WPI_VictorSPX rearRightDriveMotor;	
+  //private WPI_VictorSPX rearRightDriveMotor;	
+  private WPI_TalonSRX rearRightDriveMotor;	
   private SpeedControllerGroup rightDriveMotorGroup;
   private DifferentialDrive drivetrain;
   public boolean inRange = false;
   public double pixelsOff = 9999;
   public double distance = 9999;
-
+  public boolean foundImage = false;
   //public LIDARLite distanceSensor;
   
 
@@ -45,7 +47,8 @@ public class DriveTrain extends Subsystem {
     
     frontRightDriveMotor = new WPI_VictorSPX(RobotMap.frontRightDriveMotorCanID);
     frontRightDriveMotor.setInverted(true);
-    rearRightDriveMotor = new WPI_VictorSPX(RobotMap.rearRightDriveMotorCanID);
+    //rearRightDriveMotor = new WPI_VictorSPX(RobotMap.rearRightDriveMotorCanID);
+    rearRightDriveMotor = new WPI_TalonSRX(RobotMap.rearRightDriveMotorCanID);
     rearRightDriveMotor.setInverted(true);
     rightDriveMotorGroup = new SpeedControllerGroup(frontRightDriveMotor, rearRightDriveMotor);
     drivetrain = new DifferentialDrive(leftDriveMotorGroup, rightDriveMotorGroup);
@@ -59,8 +62,14 @@ public class DriveTrain extends Subsystem {
     
     distance = Robot.visionTable.getNumber("distance", 9999);
     pixelsOff = Robot.visionTable.getNumber("pixelsOff", 9999);
-    inRange = (pixelsOff < 0 ? pixelsOff * -1 : pixelsOff) <= RobotMap.visionDistanceOffPixelsOK;
-
+    foundImage = Robot.visionTable.getBoolean("foundImage", false);
+    if(foundImage == true){
+      inRange = (pixelsOff < 0 ? pixelsOff * -1 : pixelsOff) <= RobotMap.visionDistanceOffPixelsOK;
+    }
+    else{
+      inRange = false;
+    }
+    SmartDashboard.putBoolean("Found Image?", foundImage);
     SmartDashboard.putBoolean("In Range?", inRange);
     SmartDashboard.putNumber("Pixels from Center", pixelsOff);
     SmartDashboard.putNumber("Distance from Target", distance);

@@ -38,7 +38,7 @@ public class DriveToCenter extends Command {
     Robot.driveTrain.getVisionData();
     //get data from drivers station
     centerOffPixels = Robot.driveTrain.pixelsOff;
-    if(centerOffPixels >= 9999){
+    if(centerOffPixels >= 9999 || Robot.oi.rightStickButton2.get() == false || Robot.driveTrain.foundImage == false){
       Done = true;
       return;
     }    
@@ -60,8 +60,8 @@ public class DriveToCenter extends Command {
         zRotation = RobotMap.visionRotateSpeed;
     } 
 
-    SmartDashboard.putNumber("xSpeed", xSpeed);
-    SmartDashboard.putNumber("zRotation", zRotation);
+    SmartDashboard.putNumber("DriveToCenter xSpeed", xSpeed);
+    SmartDashboard.putNumber("DriveToCenter zRotation", zRotation);
     Robot.driveTrain.arcadeDrive(0, zRotation);
 
     if(xSpeed == 0 && zRotation == 0){

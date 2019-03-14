@@ -57,7 +57,8 @@ public class VisionImageProcessor  {
     private NetworkTable nTable;
     private NetworkTableEntry nteDistance;
     private NetworkTableEntry ntePixelsOff;
-    private NetworkTableEntry nteHatch;    
+    private NetworkTableEntry nteFoundImage;    
+    //private NetworkTableEntry nteHatch;    
     //Mat2Image mat2Img = new Mat2Image();
     public Mat lastMat;
 
@@ -74,7 +75,7 @@ public class VisionImageProcessor  {
     double lastCenter = 0;
     boolean closeEnough = false;
     double distanceFromCenter = 0;
-    boolean hatch = false;
+    boolean hatch = true;
 
     JPanel mainPanel;
     ProcessingThread currentThread;
@@ -107,7 +108,8 @@ public class VisionImageProcessor  {
         //nteInRange = nTable.getEntry("inRange");
         nteDistance = nTable.getEntry("distance");
         ntePixelsOff = nTable.getEntry("pixelsOff");
-        nteHatch = nTable.getEntry("hatch");
+        nteFoundImage = nTable.getEntry("foundImage");
+        //nteHatch = nTable.getEntry("hatch");
     }
 
     public void loadSettingsFromFile(){
@@ -200,7 +202,7 @@ public class VisionImageProcessor  {
 
     public void ProcessOneImage(){
         //if(1==1){return;}
-        hatch = nteHatch.getBoolean(false);        
+        //hatch = nteHatch.getBoolean(false);        
         BufferedImage image = getOneFrame();
         Mat mat = lastMat;
         pipeline.process(mat);
@@ -260,6 +262,7 @@ public class VisionImageProcessor  {
   
         if(points.size() < 2){
             System.out.print("Only found " + points.size() + " points.\n");            
+            nteFoundImage.setBoolean(false);
             return;
         } else if(points.size() == 2){
             //2 points
@@ -301,6 +304,12 @@ public class VisionImageProcessor  {
             rightPoint1 = goodY.lines.get(0).rightPoint;
             topPoint2 = goodY.lines.get(1).topPoint;
             rightPoint2 = goodY.lines.get(1).rightPoint;
+           }
+           else {
+               
+            System.out.print("Only found " + goodY.num  + " points.\n"); 
+            nteFoundImage.setBoolean(false);
+            return;
            }
         }
         
@@ -348,7 +357,8 @@ public class VisionImageProcessor  {
             System.out.print(Output + "\n");
             nteDistance.setDouble(distance);
            // nteInRange.setBoolean(closeEnough);
-            ntePixelsOff.setDouble(distanceFromCenter);                                    
+            ntePixelsOff.setDouble(distanceFromCenter);     
+            nteFoundImage.setBoolean(true);
         }  
                     
     }

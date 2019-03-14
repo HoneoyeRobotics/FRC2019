@@ -46,6 +46,7 @@ public class Elevator extends PIDSubsystem {
   }
 
   public void goToDrive(){
+    RobotMap.getSetPoints();
     setSetpoint(RobotMap.hatchEncoderPositions[1]);
     CurrentElevatorPosition = 1;
     ElevatorPosition = 1;
@@ -60,6 +61,7 @@ public class Elevator extends PIDSubsystem {
     displayElevatorSetpoint();
   }
   public void getHatch(){
+    RobotMap.getSetPoints();
     setSetpoint(RobotMap.hatchEncoderPositions[2]);
     CurrentElevatorPosition = 2;
     ElevatorPosition = 2;

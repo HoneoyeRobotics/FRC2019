@@ -20,15 +20,15 @@ public class RobotMap {
     public static final int frontLeftDriveMotorCanID = 1;
     public static final int rearLeftDriveMotorCanID = 2;
     public static final int frontRightDriveMotorCanID = 3;
-    public static final int rearRightDriveMotorCanID = 4;
+    public static final int rearRightDriveMotorCanID = 9;//4;
     public static final int armFwdRevMotorCanID = 5;
     public static final int elevatorMotorCanID = 6;
     public static final int leftArmWheelMotorCanID = 7;
     public static final int rightArmWheelMotorCanID = 8;
     
     public static final int pneumaticControlModuleID = 10;
-    public static final int clawInPCMID = 0;
-    public static final int clawOutPCMID = 1;
+    public static final int clawInPCMID = 1;
+    public static final int clawOutPCMID = 0;
 
     /* elevator encoder:
         Orange = Power
@@ -46,8 +46,8 @@ public class RobotMap {
     public static final double slowSpeedModifier = 0.75;
 
 
-    public static int[] ballEncoderPositions = { 0, 200, 590, 590 };
-    public static int[] hatchEncoderPositions = { 0, 200, 400, 400 };
+    public static int[] ballEncoderPositions = { 0, 200, 680, 680 };
+    public static int[] hatchEncoderPositions = { 0, 200, 325, 400 };
     public static int armFwdRevEncoderMin = 1000;
     public static int armFwdRevEncoderMax = 1110000;
     public static int armFwdRevEncoderHatchMax = 600000;
@@ -79,9 +79,20 @@ public class RobotMap {
         visionDistanceOffPixelsOK = prefs.getDouble("visionDistanceOffPixelsOK", 15);
 
         ballEncoderPositions[1] = prefs.getInt("ballEncoderPosition1", 200);
-        ballEncoderPositions[2] = prefs.getInt("ballEncoderPosition2", 590);
+        ballEncoderPositions[2] = prefs.getInt("ballEncoderPosition2", 680);
 
         hatchEncoderPositions[1] = prefs.getInt("hatchEncoderPosition1", 200);
-        hatchEncoderPositions[2] = prefs.getInt("hatchEncoderPosition2", 400);
+        hatchEncoderPositions[2] = prefs.getInt("hatchEncoderPosition2", 325);
+    }
+
+    public static void getSetPoints(){
+        
+        Preferences prefs = Preferences.getInstance();
+        ballEncoderPositions[1] = prefs.getInt("ballEncoderPosition1", 200);
+        ballEncoderPositions[2] = prefs.getInt("ballEncoderPosition2", 680);
+
+        hatchEncoderPositions[1] = prefs.getInt("hatchEncoderPosition1", 200);
+        hatchEncoderPositions[2] = prefs.getInt("hatchEncoderPosition2", 325);
+
     }
 }
