@@ -26,7 +26,7 @@ public class RotateLeft extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.driveTrain.tankDrive( -1 * RobotMap.rotateSpeed, RobotMap.rotateSpeed);
+    Robot.driveTrain.tankDrive( RobotMap.rotateSpeed,  -1 *  RobotMap.rotateSpeed);
   }
 
   // Make this return true when this Command no longer needs to run execute()

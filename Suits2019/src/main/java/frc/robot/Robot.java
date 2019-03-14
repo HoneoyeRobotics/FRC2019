@@ -133,6 +133,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    RobotMap.loadFromPreferences();
     Robot.elevator.initialize();
     Robot.arms.resetArmPositionEncoder();
     TeleopInitCommand teleopInitCommand = new TeleopInitCommand();
@@ -146,6 +147,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    RobotMap.loadFromPreferences();
     
   }
 

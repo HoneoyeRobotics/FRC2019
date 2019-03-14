@@ -1,0 +1,5 @@
+cargo ship 31.5" to bottom
+rocket 20" to bottom
+
+0, 200, 270, 270 = hatch
+0, 200, 500?, 820 = ball
