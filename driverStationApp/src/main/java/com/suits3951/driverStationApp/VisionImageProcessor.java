@@ -52,7 +52,8 @@ public class VisionImageProcessor  {
     private int cameraHeight = 240;
 
 
-    private VideoCapture videoCap;
+    private VideoCap videoCap = new VideoCap();
+
     private NetworkTableInstance ntInstance;
     private NetworkTable nTable;
     private NetworkTableEntry nteDistance;
@@ -60,7 +61,7 @@ public class VisionImageProcessor  {
     private NetworkTableEntry nteFoundImage;    
     //private NetworkTableEntry nteHatch;    
     //Mat2Image mat2Img = new Mat2Image();
-    public Mat lastMat;
+    
 
 
     GripPipeline pipeline = new GripPipeline();
@@ -92,8 +93,8 @@ public class VisionImageProcessor  {
     int threadSleepTime = 50;
 
     public VisionImageProcessor() {
-        videoCap = new VideoCapture("http://10.39.51.11/mjpg/video.mjpg");
-        boolean opened = videoCap.open("http://10.39.51.11/mjpg/video.mjpg");
+        // videoCap = new VideoCapture("http://10.39.51.11/mjpg/video.mjpg");
+        // boolean opened = videoCap.open("http://10.39.51.11/mjpg/video.mjpg");
 
 //        videoCap = new VideoCapture(0);
         //videoCap.set(Videoio.CV_CAP_PROP_FRAME_WIDTH, 320);
@@ -163,48 +164,12 @@ public class VisionImageProcessor  {
         currentThread.start();
     }
 
-    BufferedImage getOneFrame() {        
-        videoCap.read(lastMat);
-        BufferedImage image = MatToImage(lastMat);
-        return image;
-    }
-
-    BufferedImage MatToImage(Mat mat){
-
-        int type = 0;
-        switch (mat.channels()) {
-            case 1:
-                type = BufferedImage.TYPE_BYTE_GRAY;
-                break;
-            case 3:
-            type = BufferedImage.TYPE_3BYTE_BGR;
-                break;
-        } 
-        
-        int matCols = mat.cols();
-        int matRows = mat.rows();
-        BufferedImage img = null;
-        try {
-            img = new BufferedImage(matCols, matRows, type);
-            
-            if(img != null) {        
-                WritableRaster raster = img.getRaster();
-                DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();
-                byte[] data = dataBuffer.getData();
-                mat.get(0, 0, data);
-            }
-        }
-        catch(Exception ex) {
-
-        }
-        return img;
-    }
-
     public void ProcessOneImage(){
         //if(1==1){return;}
         //hatch = nteHatch.getBoolean(false);        
-        BufferedImage image = getOneFrame();
-        Mat mat = lastMat;
+        
+        BufferedImage image = videoCap.getOneFrame();
+        Mat mat = videoCap.lastMat; //videoCap.getLastMat();
         pipeline.process(mat);
         
         int point = 1;

@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
@@ -138,6 +139,18 @@ public class Elevator extends PIDSubsystem {
   public void initialize(){
     setSetpoint(0);
     enable();
+  }
+
+  public void moveSetpoint(double setpoint){
+    
+
+    //Preferences prefs = Preferences.getInstance();
+    //int currentSetpoint = RobotMap.hatchEncoderPositions[1];
+    //currentSetpoint += setpoint;
+    setSetpoint(getSetpoint() + setpoint);
+    // RobotMap.hatchEncoderPositions[1] = currentSetpoint;
+    // prefs.putInt("hatchEncoderPosition2", 325);
+    // setSetpoint(setpoint);
   }
 
   @Override

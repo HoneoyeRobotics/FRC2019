@@ -60,6 +60,7 @@ public class RobotMap {
     public static double visionFwdSpeed = 0.75;
     public static double visionRotateSpeed = 0.75;
     public static double visionDistanceOffPixelsOK = 15;
+    public static double rotateSpeed = 0.25;
 
     public static  void loadFromPreferences(){
         //load these settings from the driver station...
@@ -69,18 +70,19 @@ public class RobotMap {
         armFwdRevEncoderMax = prefs.getInt("armFwdRevEncoderMax", 1110000);
         armFwdRevEncoderHatchMax = prefs.getInt("armFwdRevEncoderHatchMax", 600000);
         armFwdRevAutoSpeed = prefs.getDouble("armFwdRevAutoSpeed", 1);
+        rotateSpeed = prefs.getDouble("rotateSpeed", 0.25);
 
         visionCenterDeadband = prefs.getDouble("visionCenterDeadband", 5);
         visionDistanceBall = prefs.getDouble("visionDistanceBall", 8.5);
         visionDistanceHatch = prefs.getDouble("visionDistanceHatch", 3);
         visionDistanceFromCamToBumper = prefs.getDouble("visionDistanceFromCamToBumper", 40);
         visionFwdSpeed = prefs.getDouble("visionFwdSpeed", 0.75);
-        visionRotateSpeed = prefs.getDouble("visionRotateSpeed", 10.75);
+        visionRotateSpeed = prefs.getDouble("visionRotateSpeed", 0.75);
         visionDistanceOffPixelsOK = prefs.getDouble("visionDistanceOffPixelsOK", 15);
 
         ballEncoderPositions[1] = prefs.getInt("ballEncoderPosition1", 200);
         ballEncoderPositions[2] = prefs.getInt("ballEncoderPosition2", 680);
-
+ 
         hatchEncoderPositions[1] = prefs.getInt("hatchEncoderPosition1", 200);
         hatchEncoderPositions[2] = prefs.getInt("hatchEncoderPosition2", 325);
     }

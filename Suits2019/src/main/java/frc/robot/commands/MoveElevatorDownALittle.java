@@ -13,11 +13,11 @@ import frc.robot.Robot;
 /**
  * Add your docs here.
  */
-public class MoveElevatorUpALittle extends InstantCommand {
+public class MoveElevatorDownALittle extends InstantCommand {
   /**
    * Add your docs here.
    */
-  public MoveElevatorUpALittle() {
+  public MoveElevatorDownALittle() {
     super();
     requires(Robot.elevator);
     // Use requires() here to declare subsystem dependencies
@@ -27,7 +27,7 @@ public class MoveElevatorUpALittle extends InstantCommand {
   // Called once when the command executes
   @Override
   protected void initialize() {
-    Robot.elevator.moveSetpoint(25);
+    Robot.elevator.moveSetpoint(-25);
   }
 
 }
