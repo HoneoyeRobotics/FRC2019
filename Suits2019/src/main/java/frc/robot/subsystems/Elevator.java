@@ -76,10 +76,10 @@ public class Elevator extends PIDSubsystem {
 
   public void moveElevatorUp(){
     //move it up from a range of 0 <> 2
-    if(ElevatorPosition < 2) {
+    if(ElevatorPosition < 3) {
       ElevatorPosition++;
-      if(ElevatorPosition >= 2){
-        ElevatorPosition = 2;
+      if(ElevatorPosition >= 3){
+        ElevatorPosition = 3;
       }
     }
     displayElevatorSetpoint();
@@ -115,7 +115,7 @@ public class Elevator extends PIDSubsystem {
   }
 
   public boolean atFloor(){
-      return CurrentElevatorPosition == 0  && returnPIDInput() < 10;
+      return CurrentElevatorPosition == 0  && returnPIDInput() < 20;
   }
 
   @Override
@@ -170,6 +170,9 @@ public class Elevator extends PIDSubsystem {
         return "Driving (1)";        
       case 2: 
         return "Scoring (2)";
+        
+      case 3: 
+        return "Scoring Top (3)";
       default:
         return "Floor (0)";
     }

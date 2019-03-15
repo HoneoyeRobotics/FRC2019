@@ -82,9 +82,11 @@ public class RobotMap {
 
         ballEncoderPositions[1] = prefs.getInt("ballEncoderPosition1", 200);
         ballEncoderPositions[2] = prefs.getInt("ballEncoderPosition2", 680);
+        ballEncoderPositions[3] = prefs.getInt("ballEncoderPosition3", 680);
  
         hatchEncoderPositions[1] = prefs.getInt("hatchEncoderPosition1", 200);
         hatchEncoderPositions[2] = prefs.getInt("hatchEncoderPosition2", 325);
+        hatchEncoderPositions[3] = hatchEncoderPositions[2];
     }
 
     public static void getSetPoints(){
@@ -92,9 +94,10 @@ public class RobotMap {
         Preferences prefs = Preferences.getInstance();
         ballEncoderPositions[1] = prefs.getInt("ballEncoderPosition1", 200);
         ballEncoderPositions[2] = prefs.getInt("ballEncoderPosition2", 680);
-
+        ballEncoderPositions[3] = prefs.getInt("ballEncoderPosition3", 820);
+ 
         hatchEncoderPositions[1] = prefs.getInt("hatchEncoderPosition1", 200);
-        hatchEncoderPositions[2] = prefs.getInt("hatchEncoderPosition2", 325);
-
+        hatchEncoderPositions[2] = prefs.getInt("hatchEncoderPosition2", 270);
+        hatchEncoderPositions[3] = hatchEncoderPositions[2];
     }
 }
