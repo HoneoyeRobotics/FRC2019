@@ -61,11 +61,12 @@ public class RobotMap {
     public static double visionRotateSpeed = 0.75;
     public static double visionDistanceOffPixelsOK = 15;
     public static double rotateSpeed = 0.25;
+    public static  boolean runSandstormMode = true;
 
     public static  void loadFromPreferences(){
         //load these settings from the driver station...
         Preferences prefs = Preferences.getInstance();
-
+        runSandstormMode = prefs.getBoolean("runSandstormMode", true);
         armFwdRevEncoderMin = prefs.getInt("armFwdRevEncoderMin", 1000);
         armFwdRevEncoderMax = prefs.getInt("armFwdRevEncoderMax", 1110000);
         armFwdRevEncoderHatchMax = prefs.getInt("armFwdRevEncoderHatchMax", 600000);

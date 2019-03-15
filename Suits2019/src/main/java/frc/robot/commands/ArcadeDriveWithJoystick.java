@@ -47,8 +47,8 @@ public class ArcadeDriveWithJoystick extends Command {
   //this is code for the tank sticks.
   double leftSpeed = Robot.oi.leftTankStick.getRawAxis(1);
   double rightSpeed = Robot.oi.rightTankStick.getRawAxis(1);
-Robot.driveTrain.tankDrive(leftSpeed, rightSpeed);
-    Robot.driveTrain.getVisionData();
+  Robot.driveTrain.tankDrive(leftSpeed, rightSpeed);
+  //  Robot.driveTrain.getVisionData();
   }
 
   // Make this return true when this Command no longer needs to run execute

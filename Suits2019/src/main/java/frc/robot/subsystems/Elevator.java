@@ -33,13 +33,13 @@ public class Elevator extends PIDSubsystem {
   public Elevator() {
     // Intert a subsystem name and PID values here
   
-    super("Elevator", 0.025, 0.0, 0.01);
+    super("Elevator", 0.008, 0.0, 0.01);
     elevatorMotor = new WPI_TalonSRX(RobotMap.elevatorMotorCanID);
     elevatorEncoder = new Encoder(RobotMap.elevatorEncoderADIO, RobotMap.elevatorEncoderBDIO);
     
     //setInputRange(-10000.0, 10000.0);
     setAbsoluteTolerance(1.0);
-    setOutputRange(-.20, 1);
+    setOutputRange(-.20, 0.8);
 
     // 498 pulses per rotation.  Set distance accordingly so we read encoder pulses.
     elevatorEncoder.setDistancePerPulse(498/360);
@@ -115,7 +115,7 @@ public class Elevator extends PIDSubsystem {
   }
 
   public boolean atFloor(){
-      return CurrentElevatorPosition == 0  && returnPIDInput() < 20;
+      return CurrentElevatorPosition == 0  && returnPIDInput() < 80;
   }
 
   @Override

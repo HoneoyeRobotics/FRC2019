@@ -52,9 +52,9 @@ public class Robot extends TimedRobot {
     oi = new OI();
     //add commands to dashboard    
     SmartDashboard.putData(Robot.driveTrain);
-    SmartDashboard.putData(Robot.claw);
-    SmartDashboard.putData(Robot.elevator);
-    SmartDashboard.putData(Robot.arms);
+    //SmartDashboard.putData(Robot.claw);
+    //SmartDashboard.putData(Robot.elevator);
+    //SmartDashboard.putData(Robot.arms);
     SmartDashboard.putData("Reset Arm Encoder", new ResetArmEncoder());
     
     usbCamera = CameraServer.getInstance().startAutomaticCapture();
@@ -62,8 +62,8 @@ public class Robot extends TimedRobot {
     usbCamera.setVideoMode(PixelFormat.kMJPEG, 320, 240, 15);
 
     visionTable = NetworkTable.getTable("VisionTable");
-    SmartDashboard.putData("Open Claw", new OpenClaw());    
-    SmartDashboard.putData("Close Claw", new CloseClaw());
+    //SmartDashboard.putData("Open Claw", new OpenClaw());    
+    //SmartDashboard.putData("Close Claw", new CloseClaw());
    // cameraInit();
   }
 /*
@@ -136,8 +136,10 @@ public class Robot extends TimedRobot {
     RobotMap.loadFromPreferences();
     Robot.elevator.initialize();
     Robot.arms.resetArmPositionEncoder();
-    TeleopInitCommand teleopInitCommand = new TeleopInitCommand();
-    teleopInitCommand.start();
+    if(RobotMap.runSandstormMode == true){
+      TeleopInitCommand teleopInitCommand = new TeleopInitCommand();
+      teleopInitCommand.start();
+    }
   }
 
   @Override
