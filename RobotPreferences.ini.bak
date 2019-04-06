@@ -1,7 +1,7 @@
 [NetworkTables Storage 3.0]
 string "/Preferences/.type"="RobotPreferences"
 double "/Preferences/ballEncoderPosition1"=200
-double "/Preferences/ballEncoderPosition2"=570
+double "/Preferences/ballEncoderPosition2"=620
 double "/Preferences/ballEncoderPosition3"=820
 double "/Preferences/hatchEncoderPosition1"=200
 double "/Preferences/hatchEncoderPosition2"=340
