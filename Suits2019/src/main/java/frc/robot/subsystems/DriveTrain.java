@@ -41,16 +41,16 @@ public class DriveTrain extends Subsystem {
 
   public DriveTrain(){
     frontLeftDriveMotor = new WPI_VictorSPX(RobotMap.frontLeftDriveMotorCanID);
-    //frontLeftDriveMotor.setInverted(true);
+    frontLeftDriveMotor.setInverted(true);
     rearLeftDriveMotor = new WPI_VictorSPX(RobotMap.rearLeftDriveMotorCanID);
-    //rearLeftDriveMotor.setInverted(true);
+    rearLeftDriveMotor.setInverted(true);
 	  //leftDriveMotorGroup = new SpeedControllerGroup(frontLeftDriveMotor, rearLeftDriveMotor);
     
     frontRightDriveMotor = new WPI_VictorSPX(RobotMap.frontRightDriveMotorCanID);
-    //frontRightDriveMotor.setInverted(true);
+    frontRightDriveMotor.setInverted(true);
     //rearRightDriveMotor = new WPI_VictorSPX(RobotMap.rearRightDriveMotorCanID);
     rearRightDriveMotor = new WPI_TalonSRX(RobotMap.rearRightDriveMotorCanID);
-    //rearRightDriveMotor.setInverted(true);
+    rearRightDriveMotor.setInverted(true);
     //rightDriveMotorGroup = new SpeedControllerGroup(frontRightDriveMotor, rearRightDriveMotor);
     //drivetrain = new DifferentialDrive(leftDriveMotorGroup, rightDriveMotorGroup);
     drivetrain = new MecanumDrive(frontLeftDriveMotor, rearLeftDriveMotor, frontRightDriveMotor, rearRightDriveMotor);

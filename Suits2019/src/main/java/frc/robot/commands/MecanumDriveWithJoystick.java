@@ -35,6 +35,13 @@ public class MecanumDriveWithJoystick extends Command {
       double zRotation = leftTrigger - rightTrigger;
       double xSpeed = Robot.oi.driverJoystick.getRawAxis(Robot.oi.driverJoystickStrafeAxis);
 
+      if(xSpeed <= 0.1 && xSpeed  >= -0.1)
+        xSpeed = 0;
+      if(zRotation <= 0.1 && zRotation  >= -0.1)
+        zRotation = 0;
+      if(zRotation <= 0.1 && zRotation  >= -0.1)
+        zRotation = 0;
+
       // if(Robot.oi.driverButtonB.get()){
       // if(zRotation > RobotMap.slowSpeedModifier){
       //   zRotation = RobotMap.slowSpeedModifier;
