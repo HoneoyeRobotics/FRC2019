@@ -14,10 +14,11 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
-import frc.robot.commands.ArcadeDriveWithJoystick;
+import frc.robot.commands.MecanumDriveWithJoystick;
 import frc.robot.lib.*;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.I2C;
@@ -25,12 +26,12 @@ import edu.wpi.first.wpilibj.I2C;
 public class DriveTrain extends Subsystem {
   private WPI_VictorSPX frontLeftDriveMotor;
 	private WPI_VictorSPX rearLeftDriveMotor;
-	private SpeedControllerGroup leftDriveMotorGroup;	
+	//private SpeedControllerGroup leftDriveMotorGroup;	
 	private WPI_VictorSPX frontRightDriveMotor;
   //private WPI_VictorSPX rearRightDriveMotor;	
   private WPI_TalonSRX rearRightDriveMotor;	
-  private SpeedControllerGroup rightDriveMotorGroup;
-  private DifferentialDrive drivetrain;
+  //private SpeedControllerGroup rightDriveMotorGroup;
+  private MecanumDrive drivetrain;
   public boolean inRange = false;
   public double pixelsOff = 9999;
   public double distance = 9999;
@@ -40,19 +41,19 @@ public class DriveTrain extends Subsystem {
 
   public DriveTrain(){
     frontLeftDriveMotor = new WPI_VictorSPX(RobotMap.frontLeftDriveMotorCanID);
-    frontLeftDriveMotor.setInverted(true);
+    //frontLeftDriveMotor.setInverted(true);
     rearLeftDriveMotor = new WPI_VictorSPX(RobotMap.rearLeftDriveMotorCanID);
-    rearLeftDriveMotor.setInverted(true);
-	  leftDriveMotorGroup = new SpeedControllerGroup(frontLeftDriveMotor, rearLeftDriveMotor);
+    //rearLeftDriveMotor.setInverted(true);
+	  //leftDriveMotorGroup = new SpeedControllerGroup(frontLeftDriveMotor, rearLeftDriveMotor);
     
     frontRightDriveMotor = new WPI_VictorSPX(RobotMap.frontRightDriveMotorCanID);
-    frontRightDriveMotor.setInverted(true);
+    //frontRightDriveMotor.setInverted(true);
     //rearRightDriveMotor = new WPI_VictorSPX(RobotMap.rearRightDriveMotorCanID);
     rearRightDriveMotor = new WPI_TalonSRX(RobotMap.rearRightDriveMotorCanID);
-    rearRightDriveMotor.setInverted(true);
-    rightDriveMotorGroup = new SpeedControllerGroup(frontRightDriveMotor, rearRightDriveMotor);
-    drivetrain = new DifferentialDrive(leftDriveMotorGroup, rightDriveMotorGroup);
-    
+    //rearRightDriveMotor.setInverted(true);
+    //rightDriveMotorGroup = new SpeedControllerGroup(frontRightDriveMotor, rearRightDriveMotor);
+    //drivetrain = new DifferentialDrive(leftDriveMotorGroup, rightDriveMotorGroup);
+    drivetrain = new MecanumDrive(frontLeftDriveMotor, rearLeftDriveMotor, frontRightDriveMotor, rearRightDriveMotor);
     // distanceSensor = new LIDARLite (I2C.Port.kOnboard);
     // distanceSensor.startMeasuring();
 
@@ -75,13 +76,18 @@ public class DriveTrain extends Subsystem {
     SmartDashboard.putNumber("Distance from Target", distance);
   }
   
-	public void arcadeDrive(double xSpeed,double zRotation) {				
+  public void mecanumDrive(double ySpeed, double xSpeed, double zRotation)
+  {
+    drivetrain.driveCartesian(ySpeed, xSpeed, zRotation);
+  }
+
+	/*public void arcadeDrive(double xSpeed,double zRotation) {				
 		drivetrain.arcadeDrive( xSpeed, zRotation);
   }	
 
   public void tankDrive(double leftSpeed, double rightSpeed){
     drivetrain.tankDrive(leftSpeed, rightSpeed);
-  }
+  }*/
   
   // public int getDistanceCM(){
   //   return distanceSensor.getDistance();
@@ -95,7 +101,7 @@ public class DriveTrain extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new ArcadeDriveWithJoystick());
+    setDefaultCommand(new MecanumDriveWithJoystick());
   }
 
 }

@@ -23,21 +23,22 @@ public class OI {
 
   public final int armWheelAxis = 4; //right stick, x axis
   public final int elbowAxis = 5; //right stick, y axis
-  
-  // public Joystick driverJoystick = new Joystick(0); 
+  public final int driverJoystickStrafeAxis = 0; 
+
+  public Joystick driverJoystick = new Joystick(0); 
   public Joystick secondaryJoystick = new Joystick(1);
 
-  public Joystick leftTankStick = new Joystick(0);
-  public Joystick rightTankStick = new Joystick(2);
+  // public Joystick leftTankStick = new Joystick(0);
+  // public Joystick rightTankStick = new Joystick(2);
   // nyi
   // public JoystickButton driverButtonA = new JoystickButton(driverJoystick, 1);  
   // public JoystickButton driverButtonB  = new JoystickButton(driverJoystick, 2); // drive slow button
   // public JoystickButton driverButtonX = new JoystickButton(driverJoystick, 3);   
   // public JoystickButton driverButtonY = new JoystickButton(driverJoystick, 4); // drive to center
-  public JoystickButton leftStickButton2 = new JoystickButton(leftTankStick, 2);   
-  public JoystickButton rightStickButton2 = new JoystickButton(rightTankStick, 2);
-  public JoystickButton rightStickButton10 = new JoystickButton(rightTankStick, 10);  //down
-  public JoystickButton rightStickButton11  = new JoystickButton(rightTankStick, 11); //up
+  // public JoystickButton leftStickButton2 = new JoystickButton(leftTankStick, 2);   
+  // public JoystickButton rightStickButton2 = new JoystickButton(rightTankStick, 2);
+  // public JoystickButton rightStickButton10 = new JoystickButton(rightTankStick, 10);  //down
+  // public JoystickButton rightStickButton11  = new JoystickButton(rightTankStick, 11); //up
 
 
   public JoystickButton secondaryButtonA = new JoystickButton(secondaryJoystick, 1);  
@@ -59,11 +60,11 @@ public class OI {
 
 
   public OI() {    
-    rightStickButton11.whenPressed(new MoveElevatorUpALittle());
-    rightStickButton10.whenPressed(new MoveElevatorDownALittle());
-    //driverButtonY.whileHeld(new DriveToCenter());
-    leftStickButton2.whileHeld(new RotateLeft());
-    rightStickButton2.whileHeld(new RotateRight());
+    // rightStickButton11.whenPressed(new MoveElevatorUpALittle());
+    // rightStickButton10.whenPressed(new MoveElevatorDownALittle());
+    // //driverButtonY.whileHeld(new DriveToCenter());
+    // leftStickButton2.whileHeld(new RotateLeft());
+    // rightStickButton2.whileHeld(new RotateRight());
 
     secondaryButtonB.whileHeld(new GetBall());
     secondaryButtonB.whenReleased(new GetBallFinished());
