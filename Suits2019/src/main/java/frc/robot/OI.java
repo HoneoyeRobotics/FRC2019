@@ -17,13 +17,13 @@ import frc.robot.commands.*;
  */
 public class OI {
  
-  public final int driverJoystickForwardAxis = 0;  //left stick, left and right
+  public final int driverJoystickForwardAxis = 1;  //left stick, left and right
   public final int driverJoystickTurnLeftAxis = 2;   // left trigger
   public final int driverJoystickTurnRightAxis = 3;   // right trigger
 
   public final int armWheelAxis = 4; //right stick, x axis
   public final int elbowAxis = 5; //right stick, y axis
-  public final int driverJoystickStrafeAxis = 1; 
+  public final int driverJoystickStrafeAxis = 0; 
 
   public Joystick driverJoystick = new Joystick(0); 
   public Joystick secondaryJoystick = new Joystick(1);

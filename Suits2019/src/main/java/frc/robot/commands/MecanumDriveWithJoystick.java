@@ -29,16 +29,16 @@ public class MecanumDriveWithJoystick extends Command {
    protected void execute() {
       //this is code for the arcade style
       
-      double ySpeed = Robot.oi.driverJoystick.getRawAxis(Robot.oi.driverJoystickForwardAxis);
+      double xSpeed = Robot.oi.driverJoystick.getRawAxis(Robot.oi.driverJoystickForwardAxis);
       double leftTrigger= Robot.oi.driverJoystick.getRawAxis(Robot.oi.driverJoystickTurnLeftAxis);
       double rightTrigger = Robot.oi.driverJoystick.getRawAxis(Robot.oi.driverJoystickTurnRightAxis);				
       double zRotation = leftTrigger - rightTrigger;
-      double xSpeed = Robot.oi.driverJoystick.getRawAxis(Robot.oi.driverJoystickStrafeAxis);
+      double ySpeed = Robot.oi.driverJoystick.getRawAxis(Robot.oi.driverJoystickStrafeAxis) * -1;
 
       if(xSpeed <= 0.1 && xSpeed  >= -0.1)
         xSpeed = 0;
-      if(zRotation <= 0.1 && zRotation  >= -0.1)
-        zRotation = 0;
+      if(ySpeed <= 0.1 && ySpeed  >= -0.1)
+        ySpeed = 0;
       if(zRotation <= 0.1 && zRotation  >= -0.1)
         zRotation = 0;
 

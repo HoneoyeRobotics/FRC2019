@@ -54,9 +54,9 @@ public class DriveTrain extends Subsystem {
     //rightDriveMotorGroup = new SpeedControllerGroup(frontRightDriveMotor, rearRightDriveMotor);
     //drivetrain = new DifferentialDrive(leftDriveMotorGroup, rightDriveMotorGroup);
     drivetrain = new MecanumDrive(frontLeftDriveMotor, rearLeftDriveMotor, frontRightDriveMotor, rearRightDriveMotor);
+    drivetrain.setDeadband(0.1);
     // distanceSensor = new LIDARLite (I2C.Port.kOnboard);
     // distanceSensor.startMeasuring();
-
   }
 
   public void getVisionData(){
@@ -76,8 +76,11 @@ public class DriveTrain extends Subsystem {
     SmartDashboard.putNumber("Distance from Target", distance);
   }
   
-  public void mecanumDrive(double ySpeed, double xSpeed, double zRotation)
+  public void mecanumDrive( double ySpeed,double xSpeed, double zRotation)
   {
+    SmartDashboard.putNumber("ySpeed", ySpeed);
+    SmartDashboard.putNumber("xSpeed", xSpeed);
+    SmartDashboard.putNumber("zRotation", zRotation);
     drivetrain.driveCartesian(ySpeed, xSpeed, zRotation);
   }
 
