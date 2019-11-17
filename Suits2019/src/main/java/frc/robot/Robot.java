@@ -49,12 +49,13 @@ public class Robot extends TimedRobot {
     claw = new Claw();
     elevator = new Elevator();
     arms = new Arms();
+    arms.resetArmPositionEncoder();
     oi = new OI();
     //add commands to dashboard    
     SmartDashboard.putData(Robot.driveTrain);
     //SmartDashboard.putData(Robot.claw);
     //SmartDashboard.putData(Robot.elevator);
-    //SmartDashboard.putData(Robot.arms);
+    SmartDashboard.putData(Robot.arms);
     SmartDashboard.putData("Reset Arm Encoder", new ResetArmEncoder());
     
     usbCamera = CameraServer.getInstance().startAutomaticCapture();
@@ -117,7 +118,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     
-    //SmartDashboard.putNumber("Arm Pos", Robot.arms.getArmPosition());
+    SmartDashboard.putNumber("Arm Pos", Robot.arms.getArmPosition());
   }
 
 

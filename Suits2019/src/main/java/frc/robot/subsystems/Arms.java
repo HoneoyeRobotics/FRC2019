@@ -46,7 +46,7 @@ public class Arms extends Subsystem {
 
   public void resetArmPositionEncoder(){
     armFwdRevMotor.setSelectedSensorPosition(0);
-    //armFwdRevEncoder.reset();
+    // armFwdRevEncoder.reset();
   }
 
   public void stop(){

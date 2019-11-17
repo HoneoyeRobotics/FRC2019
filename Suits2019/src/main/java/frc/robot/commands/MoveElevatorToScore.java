@@ -7,24 +7,27 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
 
-public class GetBall extends CommandGroup {
+/**
+ * Add your docs here.
+ */
+public class MoveElevatorToScore extends InstantCommand {
   /**
    * Add your docs here.
    */
-  public GetBall() {
-    requires(Robot.claw);
-    requires(Robot.arms);
+  public MoveElevatorToScore() {
+    super();
     requires(Robot.elevator);
-
-    //addSequential(new CloseClawIfNotAtBottom());
-    addSequential(new ArmsFullOut());
-    addSequential(new CloseClaw());
-    addSequential(new MoveElevatorToFloor());    
-    addSequential(new OpenClaw());
-    addSequential(new RunClawWheelsIn());
-
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
   }
+
+  // Called once when the command executes
+  @Override
+  protected void initialize() {
+    Robot.elevator.goToScore();
+  }
+
 }

@@ -72,8 +72,10 @@ public class OI {
     secondaryButtonLB.whenPressed(new ArmsFullIn());
     secondaryButtonRB.whenPressed(new ArmsFullOut());
     
-    secondaryButtonX.whenPressed(new OpenClaw());
-    secondaryButtonY.whenPressed(new CloseClaw());
+    secondaryButtonX.whenPressed(new CycleClaw());
+    secondaryButtonY.whenPressed(new MoveElevatorToScore());
+    // secondaryButtonX.whenPressed(new OpenClaw());
+    // secondaryButtonY.whenPressed(new CloseClaw());
 
     secondaryButtonBack.whenPressed(new GetHatch());
   }

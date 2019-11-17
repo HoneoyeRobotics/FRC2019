@@ -7,10 +7,10 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.command.*;
 import frc.robot.Robot;
 
-  public class MoveElevatorToFloor extends InstantCommand {
+  public class MoveElevatorToFloor extends Command {
     /**
      * Add your docs here.
      */
@@ -23,6 +23,11 @@ import frc.robot.Robot;
     @Override
     protected void initialize() {
       Robot.elevator.goToFloor();
+    }
+
+    @Override
+    protected boolean isFinished() {
+      return Robot.elevator.atFloor();
     }
   
   }
